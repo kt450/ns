@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NW試験 用語特訓ターミナル</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E14;
+    --bg-grid: #0E141C;
+    --panel:#121925;
+    --panel-2:#1A2433;
+    --border:#263244;
+    --border-soft:#1D2738;
+    --text:#E7EDF6;
+    --text-dim:#8C9BB0;
+    --text-faint:#5A6A80;
+
+    --nw:#4FD1C5;
+    --nw-soft:rgba(79,209,197,0.14);
+    --sec:#F0B86E;
+    --sec-soft:rgba(240,184,110,0.14);
+    --dev:#C792EA;
+    --dev-soft:rgba(199,146,234,0.14);
+    --sys:#7AA2F7;
+    --sys-soft:rgba(122,162,247,0.14);
+    --swdev:#F4877C;
+    --swdev-soft:rgba(244,135,124,0.14);
+
+    --good:#5FD68B;
+    --good-soft:rgba(95,214,139,0.14);
+    --again:#E8A23E;
+    --again-soft:rgba(232,162,62,0.14);
+
+    --radius:14px;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    background:
+      radial-gradient(circle at 12% 8%, rgba(79,209,197,0.06), transparent 40%),
+      radial-gradient(circle at 88% 18%, rgba(199,146,234,0.05), transparent 45%),
+      repeating-linear-gradient(0deg, var(--bg-grid) 0px, var(--bg-grid) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, var(--bg-grid) 0px, var(--bg-grid) 1px, transparent 1px, transparent 28px),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:780px;
+    margin:0 auto;
+    padding:28px 18px 80px;
+  }
+
+  /* ---------- Header / terminal banner ---------- */
+  .term-banner{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--text-dim);
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 14px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .term-banner .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;}
+  .term-banner .dot.r{background:#E8667A;}
+  .term-banner .dot.y{background:#E8C53E;}
+  .term-banner .dot.g{background:#5FD68B;}
+  .term-banner .path{color:var(--nw); margin-left:6px;}
+  .term-banner .cmd{color:var(--text);}
+  .term-banner .cursor{
+    display:inline-block;width:7px;height:14px;background:var(--nw);
+    margin-left:2px; animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  header.title-block{margin-bottom:22px;}
+  h1{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:clamp(22px,5vw,30px);
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  h1 .accent{color:var(--nw);}
+  .subtitle{
+    color:var(--text-dim);
+    font-size:14px;
+    line-height:1.6;
+    margin:0;
+  }
+
+  /* ---------- Category chips ---------- */
+  .chips{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:20px 0 14px;
+  }
+  .chip{
+    font-family:var(--mono);
+    font-size:12.5px;
+    font-weight:600;
+    padding:7px 13px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--text-dim);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:transform .12s ease, border-color .15s ease, color .15s ease, background .15s ease;
+    user-select:none;
+  }
+  .chip .sw{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.55;}
+  .chip:hover{transform:translateY(-1px);}
+  .chip.active{
+    color:var(--text);
+    border-color:var(--chip-color, var(--nw));
+    background:var(--chip-bg, var(--nw-soft));
+  }
+  .chip.active .sw{opacity:1;background:var(--chip-color, var(--nw));}
+
+  /* ---------- Route strip (signature progress element) ---------- */
+  .route-wrap{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    margin-bottom:18px;
+  }
+  .route-label{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-faint);
+    margin-bottom:9px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .route-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+  }
+  .node{
+    width:16px;height:16px;
+    border-radius:4px;
+    border:1.5px solid var(--border);
+    background:transparent;
+    cursor:pointer;
+    position:relative;
+    flex:0 0 auto;
+    transition:transform .1s ease;
+  }
+  .node:hover{transform:scale(1.18);}
+  .node.current{
+    border-color:var(--text);
+    box-shadow:0 0 0 2px rgba(255,255,255,0.08);
+  }
+  .node.got{background:var(--good); border-color:var(--good);}
+  .node.again{background:transparent; border-color:var(--again); border-style:dashed;}
+  .node.unseen{opacity:.45;}
+
+  /* ---------- Main card ---------- */
+  .card{
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:26px 24px 22px;
+    min-height:260px;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute; inset:0 0 auto 0; height:3px;
+    background:var(--cat-color, var(--nw));
+  }
+  .crumb{
+    font-family:var(--mono);
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--text-dim);
+    margin-bottom:18px;
+  }
+  .crumb .badge{
+    color:var(--cat-color, var(--nw));
+    font-weight:700;
+  }
+  .crumb .qnum{
+    margin-left:auto;
+    color:var(--text-faint);
+  }
+  .question{
+    font-size:clamp(17px,4vw,20px);
+    font-weight:700;
+    line-height:1.65;
+    margin:0 0 20px;
+  }
+  .answer-zone{
+    margin-top:auto;
+  }
+  .reveal-btn{
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:600;
+    color:var(--nw);
+    background:var(--nw-soft);
+    border:1px solid rgba(79,209,197,0.4);
+    border-radius:8px;
+    padding:10px 16px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:filter .15s ease;
+  }
+  .reveal-btn:hover{filter:brightness(1.15);}
+
+  .answer-box{
+    background:rgba(95,214,139,0.07);
+    border:1px solid rgba(95,214,139,0.3);
+    border-left:3px solid var(--good);
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:15px;
+    line-height:1.75;
+    color:var(--text);
+    animation:reveal .28s ease;
+  }
+  @keyframes reveal{
+    from{opacity:0; transform:translateY(4px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .answer-label{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--good);
+    margin-bottom:6px;
+    letter-spacing:.04em;
+  }
+
+  /* ---------- Action bar ---------- */
+  .actions{
+    display:flex;
+    gap:10px;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:600;
+    border-radius:8px;
+    padding:10px 14px;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--text-dim);
+    cursor:pointer;
+    flex:1 1 auto;
+    transition:filter .15s ease, transform .1s ease;
+    text-align:center;
+  }
+  .btn:hover{filter:brightness(1.2); transform:translateY(-1px);}
+  .btn.nav{flex:0 0 auto; min-width:64px; color:var(--text-faint);}
+  .btn.again{color:var(--again); border-color:rgba(232,162,62,0.4); background:var(--again-soft);}
+  .btn.got{color:var(--good); border-color:rgba(95,214,139,0.4); background:var(--good-soft);}
+  .btn[disabled]{opacity:.35; cursor:not-allowed; pointer-events:none;}
+
+  /* ---------- Stats footer ---------- */
+  .stats{
+    display:flex;
+    gap:14px;
+    margin-top:18px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    flex-wrap:wrap;
+  }
+  .stats span b{color:var(--text);}
+  .stats .got-c b{color:var(--good);}
+  .stats .again-c b{color:var(--again);}
+
+  .toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:14px;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .toggle{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-dim);
+    display:flex;
+    align-items:center;
+    gap:7px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .toggle input{accent-color:var(--nw); width:14px; height:14px;}
+  .reset-link{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    background:none;
+    border:none;
+    text-decoration:underline;
+    cursor:pointer;
+    padding:0;
+  }
+  .reset-link:hover{color:var(--text-dim);}
+
+  /* ---------- Result panel ---------- */
+  .result-panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:24px;
+    text-align:center;
+  }
+  .result-panel h2{
+    font-family:var(--mono);
+    font-size:18px;
+    margin:0 0 10px;
+  }
+  .result-panel p{color:var(--text-dim); font-size:14px; margin:0 0 18px;}
+  .result-num{
+    display:flex; justify-content:center; gap:28px; margin-bottom:18px;
+  }
+  .result-num div{font-family:var(--mono); text-align:center;}
+  .result-num .n{font-size:28px; font-weight:700;}
+  .result-num .l{font-size:11px; color:var(--text-faint);}
+
+  footer.page-footer{
+    margin-top:26px;
+    text-align:center;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-faint);
+  }
+
+  @media (max-width:480px){
+    .actions{flex-direction:column;}
+    .btn.nav{flex:1 1 auto;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cursor{animation:none;}
+    .answer-box{animation:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="term-banner">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="path">guest@nw-exam</span><span class="cmd">:~$ ./quiz --source wrong-answers.log</span><span class="cursor"></span>
+  </div>
+
+  <header class="title-block">
+    <h1>NW試験 <span class="accent">用語特訓</span>ターミナル</h1>
+    <p class="subtitle">不正解80問の論点から抽出した57の重要用語を、記述式で自己テスト。「解答を見る」→ 自分の説明と照らして判定します。</p>
+  </header>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="route-wrap">
+    <div class="route-label">
+      <span id="routeLabelLeft">SESSION MAP</span>
+      <span id="routeLabelRight">0 / 57</span>
+    </div>
+    <div class="route-strip" id="routeStrip"></div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="toolbar">
+    <label class="toggle">
+      <input type="checkbox" id="shuffleToggle">
+      ランダム出題
+    </label>
+    <button class="reset-link" id="resetBtn">セッションをリセット</button>
+  </div>
+
+  <div class="stats" id="statsBar"></div>
+
+  <footer class="page-footer">NETWORK SPECIALIST EXAM · TERMINOLOGY DRILL · 全57問</footer>
+</div>
+
+<script>
+const DATA = [
+  // ---- NW: 通信プロトコル ----
+  {id:1, cat:'nw', sub:'通信プロトコル', q:'BGP-4とは何か。', a:'自律システム(AS)間で経路情報を交換し、相互接続性を実現するパスベクトル型のルーティングプロトコル。'},
+  {id:2, cat:'nw', sub:'通信プロトコル', q:'OSPFとは何か。', a:'AS内で経路情報を交換するリンクステート型のルーティングプロトコルで、エリア分割により大規模ネットワークに対応する。'},
+  {id:3, cat:'nw', sub:'通信プロトコル', q:'TCPの輻輳制御とは何か。', a:'ネットワークの混雑状況に応じて送信データ量を調整する仕組みで、スロースタートや輻輳回避などのアルゴリズムによってパケット損失を防ぐ。'},
+  {id:4, cat:'nw', sub:'通信プロトコル', q:'IPsecのESPトンネルモードとは何か。', a:'元のIPパケット全体（IPヘッダを含む）を暗号化し、新たなIPヘッダを付加してカプセル化する通信方式。'},
+  {id:5, cat:'nw', sub:'通信プロトコル', q:'IPアドレスの集約とは何か。', a:'複数の連続したネットワークアドレスを、共通のプレフィックスを持つ一つの上位アドレスにまとめて経路情報を削減する手法。'},
+  {id:6, cat:'nw', sub:'通信プロトコル', q:'CoAPとは何か。', a:'IoT機器など制約のあるデバイス向けに設計された、UDPをベースとした軽量なアプリケーション層プロトコル。'},
+  {id:7, cat:'nw', sub:'通信プロトコル', q:'RIPとは何か。', a:'ホップ数を経路選択の基準とするディスタンスベクトル型のルーティングプロトコルで、UDPを使用して経路情報を交換する。'},
+  {id:8, cat:'nw', sub:'通信プロトコル', q:'FTPのアクティブモードとパッシブモードの違いは何か。', a:'アクティブモードはサーバがクライアントへデータ接続を発信し、パッシブモードはクライアントがサーバへデータ接続を発信する方式。'},
+  {id:9, cat:'nw', sub:'通信プロトコル', q:'ICMPとは何か。', a:'IPネットワークにおいて、エラー通知や疑似応答確認（Echo Request/Reply）などの制御メッセージを伝達するプロトコル。'},
+  {id:10, cat:'nw', sub:'通信プロトコル', q:'IGMPとは何か。', a:'ホストとルータ間でマルチキャストグループへの参加・離脱情報を交換するプロトコル。'},
+  {id:11, cat:'nw', sub:'通信プロトコル', q:'CIDRとは何か。', a:'クラスに依存しない可変長のサブネットマスクを用いてIPアドレスを柔軟に割り当てる方式で、アドレス空間の効率的な利用やルート集約に用いられる。'},
+  {id:12, cat:'nw', sub:'通信プロトコル', q:'マルチキャストアドレスとは何か。', a:'特定の複数の受信者グループに対して同時にデータを送信するための、クラスDに属するIPアドレス。'},
+  {id:13, cat:'nw', sub:'通信プロトコル', q:'TCPのシーケンス番号とは何か。', a:'送信データの順序を識別するための番号で、受信確認応答(ACK番号)とともにデータの再送制御や順序保証に用いられる。'},
+  {id:14, cat:'nw', sub:'通信プロトコル', q:'DNSのNSレコードとは何か。', a:'あるドメインの管理を委任されている権威DNSサーバを示すリソースレコード。'},
+  {id:15, cat:'nw', sub:'通信プロトコル', q:'DNSのAレコードとは何か。', a:'ホスト名とIPv4アドレスとの対応関係を示すリソースレコード。'},
+  {id:16, cat:'nw', sub:'通信プロトコル', q:'ブロードキャストアドレスとは何か。', a:'同一サブネット内の全ホストに同時にデータを送信するためのアドレスで、ホスト部のビットがすべて1のアドレス。'},
+  {id:17, cat:'nw', sub:'通信プロトコル', q:'サブネットワークアドレスとは何か。', a:'IPアドレスのうち、サブネットマスクによりネットワーク部として識別される部分から導かれる、そのサブネット自体を示すアドレス。'},
+  {id:18, cat:'nw', sub:'通信プロトコル', q:'IPv4とIPv6の主な違いは何か。', a:'アドレス長（32ビットと128ビット）、ヘッダ構造、断片化処理の方式などが異なり、IPv6はアドレス空間の拡大と処理の簡略化を実現している。'},
+  // ---- NW: データ通信と制御 ----
+  {id:19, cat:'nw', sub:'データ通信と制御', q:'スパニングツリープロトコル(STP)とは何か。', a:'ブリッジ／スイッチ間でループ構造を検出し、ルートブリッジを基準に冗長経路をブロックすることでループを防止するプロトコル。'},
+  {id:20, cat:'nw', sub:'データ通信と制御', q:'VLANタグとは何か。', a:'イーサネットフレームに挿入され、所属するVLANを識別するための4バイトの識別情報（IEEE802.1Q）。'},
+  {id:21, cat:'nw', sub:'データ通信と制御', q:'Automatic MDI/MDI-Xとは何か。', a:'接続するケーブルの種類（ストレート/クロス）を自動的に判別し、送受信ピンの割り当てを自動的に切り替える機能。'},
+  {id:22, cat:'nw', sub:'データ通信と制御', q:'CSMA方式とは何か。', a:'通信前に伝送路の使用状況を確認し、空いている場合に送信を行う制御方式。衝突を検出・回避する仕組みと組み合わせて用いられる。'},
+  // ---- NW: ネットワーク方式 ----
+  {id:23, cat:'nw', sub:'ネットワーク方式', q:'アーラン（呼量）とは何か。', a:'単位時間あたりの通話時間の総量を表す、通信トラフィックの単位。'},
+  {id:24, cat:'nw', sub:'ネットワーク方式', q:'フレーム長の算出に必要な考え方は何か。', a:'ヘッダ、データ、トレーラ等の各構成要素のオクテット数を合計して、フレーム全体の長さを求める計算方法。'},
+  {id:25, cat:'nw', sub:'ネットワーク方式', q:'音声ペイロードの計算で考慮すべき要素は何か。', a:'音声符号化方式のビットレートと、パケット生成周期（サンプリング間隔）から、1パケットに含まれる音声データ量を算出する。'},
+  {id:26, cat:'nw', sub:'ネットワーク方式', q:'光ファイバの伝送特性とは何か。', a:'信号が伝送距離に応じて減衰したり、波長分散によって波形が広がったりする、伝送品質に影響する物理的特性。'},
+  {id:27, cat:'nw', sub:'ネットワーク方式', q:'伝送誤りが発生する電文の個数を求める考え方は何か。', a:'ビット誤り率と電文の長さ（ビット数）から、誤りが発生する確率を算出し、電文全体の個数に乗じて求める。'},
+  // ---- NW: 応用・管理 ----
+  {id:28, cat:'nw', sub:'応用・管理', q:'SMTPのセッション開始コマンドは何か。', a:'クライアントがメールサーバに対してSMTPセッションの開始を要求する際に送信する、HELOまたはEHLOコマンド。'},
+  {id:29, cat:'nw', sub:'応用・管理', q:'IP電話の音声品質を表す指標とは何か。', a:'主観的な音声品質を数値化したMOS（平均オピニオン評点）や、それを客観的に推定するR値などの指標。'},
+  {id:30, cat:'nw', sub:'応用・管理', q:'WebDAVとは何か。', a:'HTTPを拡張し、Webサーバ上のファイルを直接編集・管理するプロトコル。'},
+  {id:31, cat:'nw', sub:'応用・管理', q:'MPLSとは何か。', a:'パケットにラベルを付与し、そのラベルに基づいて高速に転送経路を決定する、IPとL2の間で動作するスイッチング技術。'},
+  // ---- SEC: 攻撃手法 ----
+  {id:32, cat:'sec', sub:'攻撃手法', q:'ポリモーフィック型マルウェアとは何か。', a:'感染するたびにコード自体を変化させることで、シグネチャによる検知を回避するマルウェア。'},
+  {id:33, cat:'sec', sub:'攻撃手法', q:'テンペスト攻撃とは何か。', a:'電子機器が発する微弱な電磁波を傍受・解析することで、画面表示や入力内容などの情報を盗み取る攻撃。'},
+  {id:34, cat:'sec', sub:'攻撃手法', q:'前方秘匿性（PFS）とは何か。', a:'長期的に使用する秘密鍵が漏洩しても、過去にやり取りされた暗号化通信の内容が解読されない性質。'},
+  {id:35, cat:'sec', sub:'攻撃手法', q:'SSL/TLSのダウングレード攻撃とは何か。', a:'通信時に意図的に弱い暗号化方式やプロトコルバージョンを使用させることで、暗号強度を低下させて解読を容易にする攻撃。'},
+  // ---- SEC: 対策技術 ----
+  {id:36, cat:'sec', sub:'対策技術', q:'シグネチャ型IPSとは何か。', a:'あらかじめ登録された既知の攻撃パターン（シグネチャ）と通信内容を比較することで不正アクセスを検知する侵入防止システム。'},
+  {id:37, cat:'sec', sub:'対策技術', q:'NTPを使った増幅型DDoS攻撃に対する対策とは何か。', a:'NTPサーバの応答を悪用したリフレクション攻撃を防ぐため、不要なmonlistコマンドの無効化やアクセス制限を行う対策。'},
+  {id:38, cat:'sec', sub:'対策技術', q:'なりすましメールへの対策とは何か。', a:'送信元IPアドレスの認証を行うSPFや、電子署名で送信元を検証するDKIM、それらを組み合わせたDMARCなどの技術。'},
+  {id:39, cat:'sec', sub:'対策技術', q:'ビヘイビア法とは何か。', a:'プログラムの挙動（振る舞い）を監視し、不審な動作パターンを検出することでマルウェアを発見する手法。'},
+  {id:40, cat:'sec', sub:'対策技術', q:'踏み台にされることを防止する対策とは何か。', a:'外部から不正に中継利用されないよう、不要なポートの閉鎖やアクセス制御、NAPTの適切な設定などを行う対策。'},
+  // ---- SEC: 実装技術 ----
+  {id:41, cat:'sec', sub:'実装技術', q:'IEEE 802.1Xとは何か。', a:'有線/無線LANにおいて、ポート単位で接続端末を認証する規格。'},
+  {id:42, cat:'sec', sub:'実装技術', q:'EAPとは何か。', a:'様々な認証方式を統一的に扱うための拡張可能な認証フレームワークで、IEEE802.1X等と組み合わせて利用される。'},
+  {id:43, cat:'sec', sub:'実装技術', q:'IPsecとは何か。', a:'IPパケットレベルで認証や暗号化を行うことで、安全な通信を実現するプロトコル群。AHとESPの2つのプロトコルを持つ。'},
+  {id:44, cat:'sec', sub:'実装技術', q:'無線LANの情報セキュリティ対策とは何か。', a:'WPA3などの強固な暗号化方式を用いた通信の保護や、適切な認証方式の導入による不正アクセスの防止策。'},
+  // ---- DEV: システム開発技術 ----
+  {id:45, cat:'dev', sub:'システム開発技術', q:'FTA（故障の木解析）とは何か。', a:'発生し得る障害を頂上事象として設定し、その原因を論理ゲートを用いた樹形図で段階的に分析する手法。'},
+  {id:46, cat:'dev', sub:'システム開発技術', q:'SysMLとは何か。', a:'システムの構造や振る舞いをモデル化するための、UMLを拡張したシステムモデリング言語。'},
+  {id:47, cat:'dev', sub:'システム開発技術', q:'ユースケース図とは何か。', a:'システムが提供する機能と、それを利用するアクター（利用者や外部システム）との関係を表すUMLの図。'},
+  {id:48, cat:'dev', sub:'システム開発技術', q:'ブローカー（設計パターン）とは何か。', a:'クライアントとサーバ間の通信を仲介し、分散システムにおけるサービスの呼び出しや応答の取り次ぎを行う設計パターン。'},
+  // ---- SYS: コンピュータシステム ----
+  {id:49, cat:'sys', sub:'コンピュータシステム', q:'量子コンピュータとは何か。', a:'量子ビットの重ね合わせや量子のもつれを利用して、特定の計算を従来型コンピュータより高速に処理することを目指すコンピュータ。'},
+  {id:50, cat:'sys', sub:'コンピュータシステム', q:'メモリインターリーブとは何か。', a:'メモリを複数のバンクに分割し、連続したアクセスを並行して処理することで、実効的なアクセス速度を向上させる技術。'},
+  {id:51, cat:'sys', sub:'コンピュータシステム', q:'キャッシュメモリのライトスルー方式とライトバック方式の違いは何か。', a:'ライトスルーは主記憶とキャッシュの両方に同時に書き込む方式、ライトバックはキャッシュのみに書き込み、後でまとめて主記憶に反映する方式。'},
+  {id:52, cat:'sys', sub:'コンピュータシステム', q:'FaaSとは何か。', a:'サーバの管理を意識せず、イベントに応じて関数単位でコードを実行できるサーバレスコンピューティングの形態。'},
+  {id:53, cat:'sys', sub:'コンピュータシステム', q:'MTTRを短縮するために有効な施策とは何か。', a:'障害の早期検知や復旧手順の自動化、予備機への切替体制の整備などにより、平均修復時間を短縮する取り組み。'},
+  {id:54, cat:'sys', sub:'コンピュータシステム', q:'M/M/1の待ち行列モデルとは何か。', a:'到着過程と処理過程がともにポアソン分布（指数分布）に従い、待ち行列の窓口が1つであるという条件のもとで待ち時間や行列長を解析するモデル。'},
+  // ---- SWDEV: ソフトウェア開発管理技術 ----
+  {id:55, cat:'swdev', sub:'ソフトウェア開発管理技術', q:'マッシュアップとは何か。', a:'複数の異なるWebサービスやAPIを組み合わせて、新たな機能やサービスを作り出す手法。'},
+  {id:56, cat:'swdev', sub:'ソフトウェア開発管理技術', q:'リバースエンジニアリングとは何か。', a:'既存のソフトウェアやハードウェアを解析し、その仕様や設計情報を逆算的に抽出する手法。'},
+  {id:57, cat:'swdev', sub:'ソフトウェア開発管理技術', q:'バグトラッキングシステムとは何か。', a:'ソフトウェア開発において発見された不具合（バグ）の登録・進捗管理・修正状況の追跡を行う仕組み。'},
+];
+
+const CATS = {
+  all:   {label:'すべて',           short:'ALL',    color:'var(--text)'},
+  nw:    {label:'ネットワーク',       short:'NW',     color:'var(--nw)',    bg:'var(--nw-soft)'},
+  sec:   {label:'セキュリティ',       short:'SEC',    color:'var(--sec)',   bg:'var(--sec-soft)'},
+  dev:   {label:'システム開発技術',   short:'DEV',    color:'var(--dev)',   bg:'var(--dev-soft)'},
+  sys:   {label:'コンピュータシステム', short:'SYS',  color:'var(--sys)',   bg:'var(--sys-soft)'},
+  swdev: {label:'SW開発管理',        short:'SWDEV',  color:'var(--swdev)', bg:'var(--swdev-soft)'},
+};
+
+// ---- In-memory state (no localStorage — keeps this safe to preview anywhere) ----
+let status = {};       // {id: 'got' | 'again'}
+let revealed = {};      // {id: true} once answer shown
+DATA.forEach(d => status[d.id] = null);
+
+let filter = 'all';
+let shuffle = false;
+let order = DATA.map(d => d.id);
+let pos = 0; // index within current filtered/ordered list
+
+function currentList(){
+  let ids = filter === 'all' ? DATA.map(d=>d.id) : DATA.filter(d=>d.cat===filter).map(d=>d.id);
+  if(shuffle){
+    // stable shuffle based on order array filtered
+    return order.filter(id => ids.includes(id));
+  }
+  return ids;
+}
+
+function byId(id){ return DATA.find(d=>d.id===id); }
+
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function setFilter(key){
+  filter = key;
+  pos = 0;
+  render();
+}
+
+function toggleShuffle(on){
+  shuffle = on;
+  if(on){ order = shuffleArray(DATA.map(d=>d.id)); }
+  pos = 0;
+  render();
+}
+
+function reveal(id){
+  revealed[id] = true;
+  render();
+}
+
+function mark(id, val){
+  status[id] = val;
+  goNext();
+}
+
+function goNext(){
+  const list = currentList();
+  if(pos < list.length - 1){ pos++; }
+  render();
+}
+function goPrev(){
+  if(pos > 0){ pos--; }
+  render();
+}
+function goTo(id){
+  const list = currentList();
+  const idx = list.indexOf(id);
+  if(idx >= 0){ pos = idx; render(); }
+}
+
+function resetSession(){
+  DATA.forEach(d => status[d.id] = null);
+  revealed = {};
+  pos = 0;
+  render();
+}
+
+function renderChips(){
+  const el = document.getElementById('chips');
+  el.innerHTML = '';
+  Object.keys(CATS).forEach(key=>{
+    const c = CATS[key];
+    const btn = document.createElement('div');
+    btn.className = 'chip' + (filter===key ? ' active':'');
+    btn.style.setProperty('--chip-color', c.color);
+    if(c.bg) btn.style.setProperty('--chip-bg', c.bg);
+    btn.innerHTML = `<span class="sw"></span>${c.label}`;
+    btn.onclick = () => setFilter(key);
+    el.appendChild(btn);
+  });
+}
+
+function renderRoute(){
+  const list = currentList();
+  const strip = document.getElementById('routeStrip');
+  strip.innerHTML = '';
+  list.forEach((id, idx)=>{
+    const d = byId(id);
+    const n = document.createElement('div');
+    let cls = 'node ' + (status[id]==='got' ? 'got' : status[id]==='again' ? 'again' : 'unseen');
+    if(idx === pos) cls += ' current';
+    n.className = cls;
+    n.style.background = status[id]==='got' ? 'var(--good)' : 'transparent';
+    n.style.borderColor = status[id]==='again' ? 'var(--again)' : (idx===pos ? 'var(--text)' : CATS[d.cat].color);
+    n.title = `Q${String(id).padStart(2,'0')}: ${d.q}`;
+    n.onclick = () => goTo(id);
+    strip.appendChild(n);
+  });
+  const doneCount = list.filter(id=>status[id]).length;
+  document.getElementById('routeLabelRight').textContent = `${doneCount} / ${list.length}`;
+}
+
+function renderStats(){
+  const list = currentList();
+  const got = list.filter(id=>status[id]==='got').length;
+  const again = list.filter(id=>status[id]==='again').length;
+  const todo = list.length - got - again;
+  document.getElementById('statsBar').innerHTML = `
+    <span class="got-c">わかった <b>${got}</b></span>
+    <span class="again-c">もう一度 <b>${again}</b></span>
+    <span>未回答 <b>${todo}</b></span>
+  `;
+}
+
+function renderQuiz(){
+  const area = document.getElementById('quizArea');
+  const list = currentList();
+
+  if(list.length === 0){
+    area.innerHTML = `<div class="card"><p style="color:var(--text-dim)">この分野には問題がありません。</p></div>`;
+    return;
+  }
+
+  const allDone = list.every(id => status[id]);
+  if(allDone){
+    const got = list.filter(id=>status[id]==='got').length;
+    const again = list.filter(id=>status[id]==='again').length;
+    area.innerHTML = `
+      <div class="result-panel">
+        <h2>✓ セッション完了</h2>
+        <p>このフィルタの全${list.length}問に回答しました。</p>
+        <div class="result-num">
+          <div><div class="n" style="color:var(--good)">${got}</div><div class="l">わかった</div></div>
+          <div><div class="n" style="color:var(--again)">${again}</div><div class="l">もう一度</div></div>
+        </div>
+        <button class="btn got" style="flex:0 0 auto;" onclick="retryAgain()">「もう一度」だけ再テスト</button>
+        <button class="btn" style="flex:0 0 auto; margin-left:8px;" onclick="resetSession()">最初からやり直す</button>
+      </div>
+    `;
+    return;
+  }
+
+  const id = list[pos];
+  const d = byId(id);
+  const cat = CATS[d.cat];
+  const isRevealed = !!revealed[id];
+
+  area.innerHTML = `
+    <div class="card" style="--cat-color:${cat.color}">
+      <div class="crumb">
+        <span class="badge">${cat.short}</span>
+        <span>/ ${d.sub}</span>
+        <span class="qnum">Q${String(pos+1).padStart(2,'0')} / ${list.length}</span>
+      </div>
+      <div class="question">${d.q}</div>
+      <div class="answer-zone">
+        ${ isRevealed ? `
+          <div class="answer-box">
+            <div class="answer-label">MODEL ANSWER</div>
+            ${d.a}
+          </div>
+        ` : `
+          <button class="reveal-btn" onclick="reveal(${id})">▾ 解答を見る</button>
+        `}
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn nav" onclick="goPrev()" ${pos===0?'disabled':''}>← 前へ</button>
+      <button class="btn again" onclick="mark(${id},'again')" ${!isRevealed?'disabled':''}>もう一度 ↻</button>
+      <button class="btn got" onclick="mark(${id},'got')" ${!isRevealed?'disabled':''}>わかった ✓</button>
+      <button class="btn nav" onclick="goNext()" ${pos===list.length-1?'disabled':''}>次へ →</button>
+    </div>
+  `;
+}
+
+function retryAgain(){
+  const list = currentList();
+  const againIds = list.filter(id=>status[id]==='again');
+  if(againIds.length===0){ resetSession(); return; }
+  againIds.forEach(id=>{ status[id]=null; revealed[id]=false; });
+  order = shuffle ? shuffleArray(DATA.map(d=>d.id)) : DATA.map(d=>d.id);
+  pos = currentList().indexOf(againIds[0]);
+  render();
+}
+
+function render(){
+  renderChips();
+  renderRoute();
+  renderQuiz();
+  renderStats();
+}
+
+document.getElementById('shuffleToggle').addEventListener('change', (e)=>{
+  toggleShuffle(e.target.checked);
+});
+document.getElementById('resetBtn').addEventListener('click', resetSession);
+
+document.addEventListener('keydown', (e)=>{
+  const list = currentList();
+  if(list.length===0) return;
+  const id = list[pos];
+  if(e.key === 'ArrowRight'){ goNext(); }
+  else if(e.key === 'ArrowLeft'){ goPrev(); }
+  else if(e.key === ' ' || e.key==='Enter'){
+    e.preventDefault();
+    if(!revealed[id]) reveal(id);
+  }
+  else if(e.key === '1' && revealed[id]){ mark(id,'got'); }
+  else if(e.key === '2' && revealed[id]){ mark(id,'again'); }
+});
+
+render();
+</script>
+</body>
+</html>
