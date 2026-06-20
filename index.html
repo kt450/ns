@@ -1,716 +1,1367 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NW試験 用語特訓ターミナル</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NW試験 令和7年春 午後Ⅰ 完全解説</title>
 <style>
-  :root{
-    --bg:#0A0E14;
-    --bg-grid: #0E141C;
-    --panel:#121925;
-    --panel-2:#1A2433;
-    --border:#263244;
-    --border-soft:#1D2738;
-    --text:#E7EDF6;
-    --text-dim:#8C9BB0;
-    --text-faint:#5A6A80;
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap');
 
-    --nw:#4FD1C5;
-    --nw-soft:rgba(79,209,197,0.14);
-    --sec:#F0B86E;
-    --sec-soft:rgba(240,184,110,0.14);
-    --dev:#C792EA;
-    --dev-soft:rgba(199,146,234,0.14);
-    --sys:#7AA2F7;
-    --sys-soft:rgba(122,162,247,0.14);
-    --swdev:#F4877C;
-    --swdev-soft:rgba(244,135,124,0.14);
-
-    --good:#5FD68B;
-    --good-soft:rgba(95,214,139,0.14);
-    --again:#E8A23E;
-    --again-soft:rgba(232,162,62,0.14);
-
-    --radius:14px;
-    --mono: 'JetBrains Mono', ui-monospace, monospace;
-    --sans: 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1525;
+    --bg3: #141c30;
+    --panel: #1a2340;
+    --panel2: #1e2a4a;
+    --border: #2a3a5a;
+    --accent: #00d4ff;
+    --accent2: #7b2fff;
+    --accent3: #ff6b35;
+    --green: #00ff88;
+    --yellow: #ffd700;
+    --text: #e0e8f0;
+    --text2: #8090a8;
+    --text3: #5a6a80;
+    --q1: #00d4ff;
+    --q2: #7b2fff;
+    --q3: #ff6b35;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans JP', sans-serif;
+    --zen: 'Zen Kaku Gothic New', sans-serif;
   }
 
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body{
-    background:
-      radial-gradient(circle at 12% 8%, rgba(79,209,197,0.06), transparent 40%),
-      radial-gradient(circle at 88% 18%, rgba(199,146,234,0.05), transparent 45%),
-      repeating-linear-gradient(0deg, var(--bg-grid) 0px, var(--bg-grid) 1px, transparent 1px, transparent 28px),
-      repeating-linear-gradient(90deg, var(--bg-grid) 0px, var(--bg-grid) 1px, transparent 1px, transparent 28px),
-      var(--bg);
-    color:var(--text);
-    font-family:var(--sans);
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
   }
 
-  .wrap{
-    max-width:780px;
-    margin:0 auto;
-    padding:28px 18px 80px;
+  /* NAV */
+  #topnav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,14,26,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0;
+    padding: 0 16px;
+    height: 52px;
+  }
+  .nav-logo {
+    font-family: var(--mono); font-size: 13px; font-weight: 600;
+    color: var(--accent); white-space: nowrap; margin-right: 20px;
+    letter-spacing: 0.05em;
+  }
+  .nav-tabs { display: flex; gap: 2px; flex: 1; overflow-x: auto; }
+  .nav-tab {
+    padding: 6px 14px; border: none; background: transparent;
+    color: var(--text2); font-family: var(--sans); font-size: 13px;
+    cursor: pointer; border-radius: 6px; white-space: nowrap;
+    transition: all 0.15s; font-weight: 500;
+  }
+  .nav-tab:hover { background: var(--panel); color: var(--text); }
+  .nav-tab.active { background: var(--panel2); color: var(--accent); }
+  .nav-tab.q1.active { color: var(--q1); }
+  .nav-tab.q2.active { color: var(--q2); }
+  .nav-tab.q3.active { color: var(--q3); }
+
+  /* PROGRESS */
+  #progress-bar {
+    position: fixed; top: 52px; left: 0; right: 0; z-index: 99;
+    height: 3px; background: var(--border);
+  }
+  #progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.3s ease; width: 0%;
   }
 
-  /* ---------- Header / terminal banner ---------- */
-  .term-banner{
-    font-family:var(--mono);
-    font-size:13px;
-    color:var(--text-dim);
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:10px 14px;
-    margin-bottom:18px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    overflow:hidden;
-    white-space:nowrap;
-  }
-  .term-banner .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;}
-  .term-banner .dot.r{background:#E8667A;}
-  .term-banner .dot.y{background:#E8C53E;}
-  .term-banner .dot.g{background:#5FD68B;}
-  .term-banner .path{color:var(--nw); margin-left:6px;}
-  .term-banner .cmd{color:var(--text);}
-  .term-banner .cursor{
-    display:inline-block;width:7px;height:14px;background:var(--nw);
-    margin-left:2px; animation:blink 1.1s steps(1) infinite;
-  }
-  @keyframes blink{50%{opacity:0;}}
+  /* LAYOUT */
+  #app { margin-top: 55px; }
 
-  header.title-block{margin-bottom:22px;}
-  h1{
-    font-family:var(--mono);
-    font-weight:700;
-    font-size:clamp(22px,5vw,30px);
-    margin:0 0 6px;
-    letter-spacing:-0.01em;
-  }
-  h1 .accent{color:var(--nw);}
-  .subtitle{
-    color:var(--text-dim);
-    font-size:14px;
-    line-height:1.6;
-    margin:0;
-  }
+  .page { display: none; }
+  .page.active { display: block; }
 
-  /* ---------- Category chips ---------- */
-  .chips{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    margin:20px 0 14px;
+  /* HERO */
+  #hero {
+    min-height: calc(100vh - 55px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 40px 20px;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,255,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(123,47,255,0.05) 0%, transparent 60%);
+    text-align: center;
   }
-  .chip{
-    font-family:var(--mono);
-    font-size:12.5px;
-    font-weight:600;
-    padding:7px 13px;
-    border-radius:999px;
-    border:1px solid var(--border);
-    background:var(--panel);
-    color:var(--text-dim);
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    gap:6px;
-    transition:transform .12s ease, border-color .15s ease, color .15s ease, background .15s ease;
-    user-select:none;
+  .hero-badge {
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.3); border-radius: 20px;
+    padding: 4px 12px; letter-spacing: 0.1em; margin-bottom: 24px;
+    background: rgba(0,212,255,0.05);
   }
-  .chip .sw{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.55;}
-  .chip:hover{transform:translateY(-1px);}
-  .chip.active{
-    color:var(--text);
-    border-color:var(--chip-color, var(--nw));
-    background:var(--chip-bg, var(--nw-soft));
+  .hero-title {
+    font-family: var(--zen); font-size: clamp(28px,5vw,52px);
+    font-weight: 700; line-height: 1.2; margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .chip.active .sw{opacity:1;background:var(--chip-color, var(--nw));}
+  .hero-sub {
+    font-size: 16px; color: var(--text2); margin-bottom: 40px; max-width: 560px;
+  }
+  .hero-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    width: 100%; max-width: 760px; margin-bottom: 40px;
+  }
+  .hero-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 16px; cursor: pointer;
+    transition: all 0.2s; text-align: left;
+  }
+  .hero-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .hero-card.c1:hover { border-color: var(--q1); box-shadow: 0 8px 24px rgba(0,212,255,0.15); }
+  .hero-card.c2:hover { border-color: var(--q2); box-shadow: 0 8px 24px rgba(123,47,255,0.15); }
+  .hero-card.c3:hover { border-color: var(--q3); box-shadow: 0 8px 24px rgba(255,107,53,0.15); }
+  .hc-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .c1 .hc-num { color: var(--q1); }
+  .c2 .hc-num { color: var(--q2); }
+  .c3 .hc-num { color: var(--q3); }
+  .hc-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .hc-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .hc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+  .hc-tag { font-family: var(--mono); font-size: 10px; padding: 2px 6px;
+    border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text3); }
 
-  /* ---------- Route strip (signature progress element) ---------- */
-  .route-wrap{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:12px 14px;
-    margin-bottom:18px;
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    padding: 12px 28px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: 8px; color: #fff; font-family: var(--sans);
+    font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
   }
-  .route-label{
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--text-faint);
-    margin-bottom:9px;
-    display:flex;
-    justify-content:space-between;
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary {
+    padding: 12px 28px; background: transparent; border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); font-family: var(--sans);
+    font-size: 14px; cursor: pointer; transition: all 0.15s;
   }
-  .route-strip{
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-  }
-  .node{
-    width:16px;height:16px;
-    border-radius:4px;
-    border:1.5px solid var(--border);
-    background:transparent;
-    cursor:pointer;
-    position:relative;
-    flex:0 0 auto;
-    transition:transform .1s ease;
-  }
-  .node:hover{transform:scale(1.18);}
-  .node.current{
-    border-color:var(--text);
-    box-shadow:0 0 0 2px rgba(255,255,255,0.08);
-  }
-  .node.got{background:var(--good); border-color:var(--good);}
-  .node.again{background:transparent; border-color:var(--again); border-style:dashed;}
-  .node.unseen{opacity:.45;}
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ---------- Main card ---------- */
-  .card{
-    background:linear-gradient(180deg, var(--panel-2), var(--panel));
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:26px 24px 22px;
-    min-height:260px;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-    overflow:hidden;
-  }
-  .card::before{
-    content:"";
-    position:absolute; inset:0 0 auto 0; height:3px;
-    background:var(--cat-color, var(--nw));
-  }
-  .crumb{
-    font-family:var(--mono);
-    font-size:12px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:var(--text-dim);
-    margin-bottom:18px;
-  }
-  .crumb .badge{
-    color:var(--cat-color, var(--nw));
-    font-weight:700;
-  }
-  .crumb .qnum{
-    margin-left:auto;
-    color:var(--text-faint);
-  }
-  .question{
-    font-size:clamp(17px,4vw,20px);
-    font-weight:700;
-    line-height:1.65;
-    margin:0 0 20px;
-  }
-  .answer-zone{
-    margin-top:auto;
-  }
-  .reveal-btn{
-    font-family:var(--mono);
-    font-size:13px;
-    font-weight:600;
-    color:var(--nw);
-    background:var(--nw-soft);
-    border:1px solid rgba(79,209,197,0.4);
-    border-radius:8px;
-    padding:10px 16px;
-    cursor:pointer;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    transition:filter .15s ease;
-  }
-  .reveal-btn:hover{filter:brightness(1.15);}
+  /* CONTENT PAGE */
+  .content-page { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
 
-  .answer-box{
-    background:rgba(95,214,139,0.07);
-    border:1px solid rgba(95,214,139,0.3);
-    border-left:3px solid var(--good);
-    border-radius:8px;
-    padding:14px 16px;
-    font-size:15px;
-    line-height:1.75;
-    color:var(--text);
-    animation:reveal .28s ease;
+  .section-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 28px;
+    padding-bottom: 16px; border-bottom: 1px solid var(--border);
   }
-  @keyframes reveal{
-    from{opacity:0; transform:translateY(4px);}
-    to{opacity:1; transform:translateY(0);}
+  .section-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0;
   }
-  .answer-label{
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--good);
-    margin-bottom:6px;
-    letter-spacing:.04em;
+  .dot-q1 { background: var(--q1); box-shadow: 0 0 8px var(--q1); }
+  .dot-q2 { background: var(--q2); box-shadow: 0 0 8px var(--q2); }
+  .dot-q3 { background: var(--q3); box-shadow: 0 0 8px var(--q3); }
+  .dot-g { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .section-title { font-family: var(--zen); font-size: 22px; font-weight: 700; }
+
+  /* CARDS */
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 14px; font-weight: 700; color: var(--accent);
+    margin-bottom: 10px; font-family: var(--mono); letter-spacing: 0.05em;
   }
 
-  /* ---------- Action bar ---------- */
-  .actions{
-    display:flex;
-    gap:10px;
-    margin-top:16px;
-    flex-wrap:wrap;
+  /* GLOSSARY */
+  .glossary-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 12px;
+    margin-bottom: 32px;
   }
-  .btn{
-    font-family:var(--mono);
-    font-size:13px;
-    font-weight:600;
-    border-radius:8px;
-    padding:10px 14px;
-    border:1px solid var(--border);
-    background:var(--panel);
-    color:var(--text-dim);
-    cursor:pointer;
-    flex:1 1 auto;
-    transition:filter .15s ease, transform .1s ease;
-    text-align:center;
+  .gcard {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; cursor: pointer;
+    transition: all 0.15s;
   }
-  .btn:hover{filter:brightness(1.2); transform:translateY(-1px);}
-  .btn.nav{flex:0 0 auto; min-width:64px; color:var(--text-faint);}
-  .btn.again{color:var(--again); border-color:rgba(232,162,62,0.4); background:var(--again-soft);}
-  .btn.got{color:var(--good); border-color:rgba(95,214,139,0.4); background:var(--good-soft);}
-  .btn[disabled]{opacity:.35; cursor:not-allowed; pointer-events:none;}
-
-  /* ---------- Stats footer ---------- */
-  .stats{
-    display:flex;
-    gap:14px;
-    margin-top:18px;
-    font-family:var(--mono);
-    font-size:12.5px;
-    color:var(--text-dim);
-    flex-wrap:wrap;
+  .gcard:hover { border-color: var(--accent); background: var(--panel2); }
+  .gcard.expanded { border-color: var(--accent); }
+  .gcard-term {
+    font-family: var(--mono); font-size: 14px; font-weight: 600;
+    color: var(--accent); margin-bottom: 4px;
   }
-  .stats span b{color:var(--text);}
-  .stats .got-c b{color:var(--good);}
-  .stats .again-c b{color:var(--again);}
-
-  .toolbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:14px;
-    gap:10px;
-    flex-wrap:wrap;
+  .gcard-short { font-size: 12px; color: var(--text2); }
+  .gcard-body {
+    display: none; margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--border); font-size: 13px; line-height: 1.8;
+    color: var(--text);
   }
-  .toggle{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--text-dim);
-    display:flex;
-    align-items:center;
-    gap:7px;
-    cursor:pointer;
-    user-select:none;
-  }
-  .toggle input{accent-color:var(--nw); width:14px; height:14px;}
-  .reset-link{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--text-faint);
-    background:none;
-    border:none;
-    text-decoration:underline;
-    cursor:pointer;
-    padding:0;
-  }
-  .reset-link:hover{color:var(--text-dim);}
-
-  /* ---------- Result panel ---------- */
-  .result-panel{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:24px;
-    text-align:center;
-  }
-  .result-panel h2{
-    font-family:var(--mono);
-    font-size:18px;
-    margin:0 0 10px;
-  }
-  .result-panel p{color:var(--text-dim); font-size:14px; margin:0 0 18px;}
-  .result-num{
-    display:flex; justify-content:center; gap:28px; margin-bottom:18px;
-  }
-  .result-num div{font-family:var(--mono); text-align:center;}
-  .result-num .n{font-size:28px; font-weight:700;}
-  .result-num .l{font-size:11px; color:var(--text-faint);}
-
-  footer.page-footer{
-    margin-top:26px;
-    text-align:center;
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--text-faint);
+  .gcard.expanded .gcard-body { display: block; }
+  .gcard-example {
+    margin-top: 10px; padding: 10px; background: var(--bg3);
+    border-radius: 6px; font-family: var(--mono); font-size: 12px;
+    color: var(--green); white-space: pre-wrap;
   }
 
-  @media (max-width:480px){
-    .actions{flex-direction:column;}
-    .btn.nav{flex:1 1 auto;}
+  /* PROBLEM SECTION */
+  .prob-scenario {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0;
+    padding: 20px; margin-bottom: 20px; font-size: 14px; line-height: 1.9;
+  }
+  .prob-scenario strong { color: var(--accent); }
+
+  .qa-block { margin-bottom: 24px; }
+  .qa-q {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px 10px 0 0; padding: 16px 20px;
+    font-size: 14px; line-height: 1.8; cursor: pointer;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .qa-q:hover { background: var(--panel2); }
+  .qa-qnum {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    color: var(--yellow); white-space: nowrap; margin-top: 2px;
+    min-width: 60px;
+  }
+  .qa-toggle { margin-left: auto; color: var(--text3); font-size: 18px; flex-shrink: 0; }
+  .qa-ans {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-top: none; border-radius: 0 0 10px 10px;
+    padding: 0 20px; max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+  .qa-ans.open { max-height: 1000px; padding: 16px 20px; }
+  .ans-label {
+    font-family: var(--mono); font-size: 11px; color: var(--green);
+    letter-spacing: 0.1em; margin-bottom: 8px;
+  }
+  .ans-text {
+    font-size: 14px; line-height: 1.9; color: var(--text);
+  }
+  .ans-text strong { color: var(--yellow); }
+  .ans-key {
+    display: inline-block; background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3); color: var(--green);
+    border-radius: 4px; padding: 2px 8px; font-family: var(--mono);
+    font-size: 13px; font-weight: 600; margin: 2px;
+  }
+  .ans-why {
+    margin-top: 12px; padding: 12px; background: rgba(0,212,255,0.05);
+    border-left: 2px solid var(--accent); border-radius: 0 6px 6px 0;
+    font-size: 13px; color: var(--text2); line-height: 1.8;
+  }
+  .ans-why strong { color: var(--accent); }
+  .point-badge {
+    display: inline-block; font-family: var(--mono); font-size: 10px;
+    background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3);
+    color: var(--yellow); border-radius: 4px; padding: 1px 6px; margin-left: 6px;
   }
 
-  @media (prefers-reduced-motion: reduce){
-    .cursor{animation:none;}
-    .answer-box{animation:none;}
+  /* NETWORK DIAGRAM */
+  .diagram-box {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px; margin-bottom: 20px;
+    overflow-x: auto;
+  }
+  .diagram-title { font-family: var(--mono); font-size: 12px; color: var(--text3);
+    letter-spacing: 0.1em; margin-bottom: 12px; }
+  pre.diagram {
+    font-family: var(--mono); font-size: 12px; color: var(--text2);
+    line-height: 1.6; white-space: pre;
+  }
+  pre.diagram .hi1 { color: var(--q1); }
+  pre.diagram .hi2 { color: var(--q2); }
+  pre.diagram .hi3 { color: var(--q3); }
+  pre.diagram .hig { color: var(--green); }
+  pre.diagram .hiy { color: var(--yellow); }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .data-table th {
+    background: var(--panel2); padding: 10px 14px; text-align: left;
+    color: var(--text2); font-weight: 600; font-family: var(--mono);
+    font-size: 12px; letter-spacing: 0.05em; border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 10px 14px; border-bottom: 1px solid rgba(42,58,90,0.5);
+    line-height: 1.6;
+  }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .td-mono { font-family: var(--mono); font-size: 12px; }
+  .td-accent { color: var(--accent); font-family: var(--mono); }
+
+  /* QUIZ */
+  .quiz-container { max-width: 700px; margin: 0 auto; }
+  .quiz-progress {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px; font-size: 13px; color: var(--text2);
+  }
+  .quiz-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; margin: 0 12px; }
+  .quiz-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+  .quiz-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 14px; padding: 28px; margin-bottom: 20px;
+  }
+  .quiz-tag {
+    font-family: var(--mono); font-size: 11px; color: var(--yellow);
+    letter-spacing: 0.1em; margin-bottom: 12px;
+  }
+  .quiz-q { font-size: 16px; line-height: 1.8; margin-bottom: 20px; font-weight: 500; }
+  .quiz-choices { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-choice {
+    padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; font-size: 14px; transition: all 0.15s; background: var(--bg3);
+    text-align: left;
+  }
+  .quiz-choice:hover:not(.disabled) { border-color: var(--accent); background: rgba(0,212,255,0.05); }
+  .quiz-choice.correct { border-color: var(--green); background: rgba(0,255,136,0.08); color: var(--green); }
+  .quiz-choice.wrong { border-color: #ff4444; background: rgba(255,68,68,0.08); color: #ff6666; }
+  .quiz-choice.disabled { cursor: default; }
+  .quiz-explain {
+    margin-top: 16px; padding: 14px; background: var(--bg3);
+    border-left: 2px solid var(--green); border-radius: 0 8px 8px 0;
+    font-size: 13px; line-height: 1.8; display: none;
+  }
+  .quiz-explain.show { display: block; }
+  .quiz-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .quiz-score {
+    text-align: center; padding: 40px; background: var(--panel);
+    border-radius: 14px; display: none;
+  }
+  .quiz-score.show { display: block; }
+  .score-num { font-family: var(--mono); font-size: 56px; font-weight: 600; color: var(--accent); }
+  .score-label { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 9px; top: 0; bottom: 0;
+    width: 1px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 20px; }
+  .tl-dot { position: absolute; left: -24px; top: 6px; width: 10px; height: 10px;
+    border-radius: 50%; border: 2px solid var(--accent); background: var(--bg); }
+  .tl-title { font-weight: 700; font-size: 14px; color: var(--accent); margin-bottom: 4px; }
+  .tl-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+  /* CHIP */
+  .chip {
+    display: inline-block; font-family: var(--mono); font-size: 11px;
+    padding: 2px 8px; border-radius: 4px; margin: 2px;
+  }
+  .chip-blue { background: rgba(0,212,255,0.1); color: var(--q1); border: 1px solid rgba(0,212,255,0.2); }
+  .chip-purple { background: rgba(123,47,255,0.1); color: #b784ff; border: 1px solid rgba(123,47,255,0.2); }
+  .chip-orange { background: rgba(255,107,53,0.1); color: #ff9970; border: 1px solid rgba(255,107,53,0.2); }
+  .chip-green { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+
+  /* ALERT */
+  .alert {
+    padding: 14px 16px; border-radius: 8px; margin: 12px 0; font-size: 13px; line-height: 1.7;
+  }
+  .alert-info { background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.2); color: var(--text); }
+  .alert-warn { background: rgba(255,215,0,0.07); border: 1px solid rgba(255,215,0,0.2); color: var(--text); }
+  .alert-tip { background: rgba(0,255,136,0.07); border: 1px solid rgba(0,255,136,0.2); color: var(--text); }
+  .alert strong { color: var(--accent); }
+  .alert-warn strong { color: var(--yellow); }
+  .alert-tip strong { color: var(--green); }
+
+  h2 { font-family: var(--zen); font-size: 20px; font-weight: 700; margin: 28px 0 14px; color: var(--text); }
+  h3 { font-size: 16px; font-weight: 700; margin: 20px 0 10px; color: var(--text2); }
+  p { margin-bottom: 12px; font-size: 14px; line-height: 1.8; }
+
+  /* SEARCH */
+  .search-box {
+    width: 100%; padding: 12px 16px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+    font-family: var(--sans); font-size: 14px; margin-bottom: 20px;
+    outline: none; transition: border-color 0.15s;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--text3); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .hero-cards { grid-template-columns: 1fr; }
+    .glossary-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: 18px; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="term-banner">
-    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-    <span class="path">guest@nw-exam</span><span class="cmd">:~$ ./quiz --source wrong-answers.log</span><span class="cursor"></span>
+<!-- NAV -->
+<nav id="topnav">
+  <div class="nav-logo">NW 令和7春</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('home')">🏠 ホーム</button>
+    <button class="nav-tab" onclick="showPage('glossary')">📖 用語解説</button>
+    <button class="nav-tab q1" onclick="showPage('q1')">問1 ルータ更改</button>
+    <button class="nav-tab q2" onclick="showPage('q2')">問2 ネットワーク改善</button>
+    <button class="nav-tab q3" onclick="showPage('q3')">問3 セキュアWebGW</button>
+    <button class="nav-tab" onclick="showPage('quiz')">🎯 確認テスト</button>
   </div>
+</nav>
 
-  <header class="title-block">
-    <h1>NW試験 <span class="accent">用語特訓</span>ターミナル</h1>
-    <p class="subtitle">不正解80問の論点から抽出した57の重要用語を、記述式で自己テスト。「解答を見る」→ 自分の説明と照らして判定します。</p>
-  </header>
+<div id="progress-bar"><div id="progress-fill"></div></div>
 
-  <div class="chips" id="chips"></div>
+<div id="app">
 
-  <div class="route-wrap">
-    <div class="route-label">
-      <span id="routeLabelLeft">SESSION MAP</span>
-      <span id="routeLabelRight">0 / 57</span>
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div id="hero">
+    <div class="hero-badge">NW · 令和7年度 春期 · 午後Ⅰ</div>
+    <h1 class="hero-title">完全理解<br>学習ガイド</h1>
+    <p class="hero-sub">用語解説から設問解説まで。ネットワークスペシャリスト試験を完全攻略。</p>
+    <div class="hero-cards">
+      <div class="hero-card c1" onclick="showPage('q1')">
+        <div class="hc-num">PROBLEM 01</div>
+        <div class="hc-title">ルータの更改</div>
+        <div class="hc-desc">冗長化NWでのメンテナンス手法。OSPFとVRRPを活用した無停止更改。</div>
+        <div class="hc-tags">
+          <span class="hc-tag">OSPF</span><span class="hc-tag">VRRP</span>
+          <span class="hc-tag">eBGP</span><span class="hc-tag">DMVPN</span>
+        </div>
+      </div>
+      <div class="hero-card c2" onclick="showPage('q2')">
+        <div class="hc-num">PROBLEM 02</div>
+        <div class="hc-title">ネットワーク改善</div>
+        <div class="hc-desc">学校NWのトラブルシュート。NAPT枯渇とHTTPバージョンの関係を解析。</div>
+        <div class="hc-tags">
+          <span class="hc-tag">NAPT</span><span class="hc-tag">HTTP/2</span>
+          <span class="hc-tag">HTTP/3</span><span class="hc-tag">QUIC</span>
+        </div>
+      </div>
+      <div class="hero-card c3" onclick="showPage('q3')">
+        <div class="hc-num">PROBLEM 03</div>
+        <div class="hc-title">セキュアWebGW導入</div>
+        <div class="hc-desc">プロキシからSWGサービスへの移行。FWルールとSSLインスペクション。</div>
+        <div class="hc-tags">
+          <span class="hc-tag">SWG</span><span class="hc-tag">HTTPS検査</span>
+          <span class="hc-tag">RADIUS</span><span class="hc-tag">PAC</span>
+        </div>
+      </div>
     </div>
-    <div class="route-strip" id="routeStrip"></div>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('glossary')">📖 用語解説から始める</button>
+      <button class="btn-secondary" onclick="showPage('quiz')">🎯 確認テストに挑戦</button>
+    </div>
   </div>
-
-  <div id="quizArea"></div>
-
-  <div class="toolbar">
-    <label class="toggle">
-      <input type="checkbox" id="shuffleToggle">
-      ランダム出題
-    </label>
-    <button class="reset-link" id="resetBtn">セッションをリセット</button>
-  </div>
-
-  <div class="stats" id="statsBar"></div>
-
-  <footer class="page-footer">NETWORK SPECIALIST EXAM · TERMINOLOGY DRILL · 全57問</footer>
 </div>
 
+<!-- GLOSSARY -->
+<div id="page-glossary" class="page">
+  <div class="content-page">
+    <div class="section-header">
+      <div class="section-dot dot-g"></div>
+      <div class="section-title">用語解説 — キーワード完全ガイド</div>
+    </div>
+    <input type="text" class="search-box" placeholder="用語を検索... (例: OSPF, VRRP, NAPT)" oninput="filterGlossary(this.value)">
+    <div class="glossary-grid" id="glossary-grid"></div>
+  </div>
+</div>
+
+<!-- Q1 -->
+<div id="page-q1" class="page">
+  <div class="content-page">
+    <div class="section-header">
+      <div class="section-dot dot-q1"></div>
+      <div class="section-title">問1 — ルータの更改</div>
+    </div>
+
+    <div class="prob-scenario">
+      <strong>【シナリオ概要】</strong><br>
+      A社（従業員800人・建設機械販売）は大阪本社と東京支社を<strong>広域イーサ網＋IPsec VPN（冗長）</strong>で接続。C社SaaSともWAN経由で接続。ルータのメーカーサポート終了に伴い、更改プロジェクトを立ち上げ、担当Bさんが手順書を作成する。
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">図1 現在のA社NW（構成図）</div>
+      <pre class="diagram">
+  インターネット ─── FW10 ─── L3SW10 ─── L2SW11, L2SW12 ─── PC（大阪内部NW）
+                          │
+                        R10, R11 ─── 広域イーサ網 ─── R30, R31 ─── C社SaaS
+                          │
+                        R20, R21 ─── IPsec VPN ───(東京支社)
+                                         │
+                                       L2SW20 ─── PC（東京内部NW）
+
+  ※ OSPFエリアは全体で エリアID 0.0.0.0 の <span class="hi1">バックボーン</span>エリアのみ
+  ※ ルータIDは <span class="hiy">ループバックIPアドレス</span> を使用
+  ※ VRRPはR20(優先度105)、R21(100)でデフォルトゲートウェイを冗長化
+  ※ OSPFコスト: 広域イーサ=100, IPsec VPN=1000, ループバック=1, その他=10</pre>
+    </div>
+
+    <h2>設問1 — 現在のA社NW</h2>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(1)-a</div>
+        <div>OSPFのエリアは、エリアIDが0.0.0.0と表記される <strong>[ a ]</strong> エリアだけで構成されている。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">バックボーン</span>
+          <div class="ans-why">
+            <strong>解説：</strong>OSPFにはエリアという概念があり、エリアID=0.0.0.0（または0）が「バックボーンエリア」と呼ばれる特別なエリアです。単一エリア構成ではバックボーンエリアのみ使用されます。エリアを分割するとABR（エリア境界ルータ）が必要になりますが、本問では不使用。<br><br>
+            <strong>試験ポイント：</strong>エリアID=0.0.0.0 ⇒ バックボーンエリアは必ず覚える。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(1)-b</div>
+        <div>ループバックIPアドレスは、OSPFルータを識別する <strong>[ b ]</strong> IDとして利用されている。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">ルータ</span>
+          <div class="ans-why">
+            <strong>解説：</strong>OSPFではルータを一意に識別するためにルータIDを使用します。通常はループバックインタフェースのIPアドレスがルータIDに採用されます。ループバックは物理的なリンクダウンに左右されないため、安定したIDとなります。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(1)-c</div>
+        <div>R20, R21の内部NWと接続するインタフェースでは、PCに設定するデフォルトルートのネクストホップに相当する <strong>[ c ]</strong> の可用性を向上するために、VRRPが動作している。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">デフォルトゲートウェイ</span>
+          <div class="ans-why">
+            <strong>解説：</strong>PCのデフォルトルートのネクストホップ＝デフォルトゲートウェイです。VRRPは仮想IPアドレスを使って複数ルータでデフォルトゲートウェイを冗長化するプロトコル。R20（優先度105）が通常マスター、障害時にR21（優先度100）が引き継ぐ設計。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(2)</div>
+        <div>OSPFのネイバー認証によって、どのような問題を防止できるか。経路交換の安全性の観点から35字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">不正なOSPFルータと隣接関係になり経路交換してしまう問題</span>
+          <div class="ans-why">
+            <strong>解説：</strong>OSPFネイバー認証がない場合、悪意のあるルータや誤設定された機器がOSPFに参加して偽の経路情報を広告できます。認証（MD5等）によりネイバー確立時に認証を行い、不正機器の参加を防ぎます。<br><br>
+            <strong>キーワード：</strong>「不正なルータ」「隣接関係（ネイバー）」「経路交換」の3要素を含める。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(3)</div>
+        <div>R31がeBGPで経路広告するAS_PATH長はR30と比較してどうする必要があるか。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">長くする</span>
+          <div class="ans-why">
+            <strong>解説：</strong>eBGPのAS_PATHプリペンド設定により、通常はR30経由（AS_PATH短い）、障害時はR31経由（AS_PATH長い）という優先制御を実現します。BGPではAS_PATHが短い経路が優先されるため、R31のAS_PATHを意図的に長くすることで「R30優先、R31バックアップ」の設計になります。<br><br>
+            <strong>AS_PATHプリペンド：</strong>自ASのAS番号を経路広告時に複数回付加する技術。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(4)</div>
+        <div>プリエンプトディレイを設定し、プライオリティの値が高いルータの電源をオンにした際に一定時間待つのは、ルータがどのような状態になることを待つためか。OSPFを利用していることに着目して25字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">OSPFの経路情報が収束した状態</span>
+          <div class="ans-why">
+            <strong>解説：</strong>ルータが再起動直後はOSPFの経路交換（ネイバー確立→LSA交換→SPF計算）がまだ完了していません。この状態でVRRPマスターになってしまうと、正常な経路情報なしにトラフィックを受け取り通信断が発生します。プリエンプトディレイでOSPFコンバージェンス完了を待ちます。<br><br>
+            <strong>収束（コンバージェンス）：</strong>全ルータが同一の経路情報を持つ安定状態になること。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>設問2 — ルータ更改手順の作成</h2>
+
+    <div class="alert alert-info">
+      <strong>更改手順の方針：</strong>①設定変更で通信を迂回 → ②ルータ停止・物理交換 → ③確認後に迂回解除。pingの継続実行でパケットロスがないことを業務影響なしの判断基準とする。
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(1)</div>
+        <div>R10の更改手順実施中に、大阪本社の内部NWからpingを実行する際の宛先と、東京支社の内部NWからpingを実行する際の宛先を、R10を経由する通信に着目して図1中の(ア)〜(ウ)の記号で全て答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          大阪本社から：<span class="ans-key">(ウ) C社SaaS</span><br>
+          東京支社から：<span class="ans-key">(ア) インターネット</span>、<span class="ans-key">(イ) サーバセグメント</span>
+          <div class="ans-why">
+            <strong>解説：</strong>R10（大阪側、広域イーサ網接続）を経由する通信を特定します。<br><br>
+            • <strong>大阪本社→C社SaaS：</strong>R10→広域イーサ網→R30→C社SaaSのルートを通過<br>
+            • <strong>東京支社→インターネット：</strong>東京→WAN→大阪→FW10→インターネット（FW10はR10経由）<br>
+            • <strong>東京支社→サーバセグメント：</strong>同様に大阪側L3SW10経由でR10を通過<br><br>
+            R10更改中はこれらの通信が正常であることを確認する必要がある。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(2)</div>
+        <div>R10のOSPFコストをどのような値に変更すべきか。30字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">65535といった十分大きな値に変更する</span>
+          <div class="ans-why">
+            <strong>解説：</strong>R10を迂回させるためにはOSPFコストを非常に大きくして他の経路が選択されるようにします。OSPFコストの最大値は65535。現在の広域イーサ網コストは100なので、65535にすればR11経由（コスト100）の方が必ず優先されます。<br><br>
+            <strong>OSPFコスト：</strong>値が小さいほど優先。インタフェース帯域幅から自動計算されるが手動設定可能。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(3)</div>
+        <div>電源をオフにする前に全ての物理インタフェースを閉塞する理由を30字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">物理インタフェース閉塞の方が素早く切り戻せるから</span>
+          <div class="ans-why">
+            <strong>解説：</strong>物理インタフェースを閉塞（shutdownコマンド等）すると、OSPFネイバーへのリンクダウン通知が即座に行われ、経路の再計算が速やかに完了します。電源オフだけでは切り戻しが遅くなる可能性があります。閉塞→確認→電源オフという手順で安全に進められます。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(4)</div>
+        <div>項番2-6でイーサネットケーブルを接続する際に、誤ったインタフェースに接続しないようにするために、項番2-2の前にどのような手順を追加すべきか。25字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">イーサネットケーブルにラベルを付与する</span>
+          <div class="ans-why">
+            <strong>解説：</strong>ケーブルを抜く前（2-2の前）に各ケーブルがどのインタフェースに接続されているかをラベルで明示しておきます。新R10に交換後（2-6）にケーブルを再接続する際、ラベルを見て正しいインタフェースに差し込めるようになります。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(5)</div>
+        <div>新R10からpingコマンドを実行する際の宛先にすべき対象を、図1中の機器名を用いて四つ答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          <span class="ans-key">L3SW10</span>
+          <span class="ans-key">R11</span>
+          <span class="ans-key">R20</span>
+          <span class="ans-key">R30</span>
+          <div class="ans-why">
+            <strong>解説：</strong>新R10が正しく接続され、OSPFネイバーが確立されていることを確認するため、直接接続または隣接する機器への疎通確認を行います。<br><br>
+            • L3SW10：大阪本社側のL3SW（同一OSPFエリア内の直接接続機器）<br>
+            • R11：冗長構成のペアルータ（広域イーサ網側ネイバー）<br>
+            • R20：東京支社側ルータ（OSPFネイバー、IPsec VPN経由）<br>
+            • R30：C社SaaS接続ルータ（eBGP接続相手で広域イーサ網経由）
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Q2 -->
+<div id="page-q2" class="page">
+  <div class="content-page">
+    <div class="section-header">
+      <div class="section-dot dot-q2"></div>
+      <div class="section-title">問2 — ネットワークの改善</div>
+    </div>
+
+    <div class="prob-scenario">
+      <strong>【シナリオ概要】</strong><br>
+      私立U中学校（PC 600台）で校内サービスの不具合多発。S社の教育支援Eサービスに朝8:00〜8:15の自習ドリル時間帯にタイムアウトが発生。T社のVさんが調査担当。<strong>ISP接続帯域不足</strong>と<strong>NAPT処理能力不足</strong>の2つの仮説を検証。
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">U校ネットワーク構成</div>
+      <pre class="diagram">
+  インターネット ─── ISP ─── ルータ ─── L3SW ─── L2SW ─── 認証/DHCP/syslog/動画サーバ
+                                              │
+                              ┌──────────────┤
+                              │              │              │
+                           L2SW           L2SW           L2SW
+                           AP...AP        AP...AP        AP...AP
+                           PC...PC        PC...PC        PC...PC
+                        教室棟1F       教室棟2F       教室棟3F
+                        192.168.10.0/24 192.168.20.0/24 192.168.30.0/24
+
+  NAPT：プライベートIP → グローバルIP（ISPから割り当て）
+  PC認証：IEEE802.1X認証（認証サーバ使用）
+  AP：Wi-Fi 6対応、L2SW経由でPoE+給電（最大30W）</pre>
+    </div>
+
+    <h2>設問1 — U校ネットワークの概要</h2>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(1)-a,b,c</div>
+        <div>本文中の [ a ]〜[ c ] に入れる適切な字句を答えよ。（NAPTとPoEに関する空欄）</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          a: <span class="ans-key">プライベート</span>（NAPTで変換される内部側IPアドレス）<br>
+          b: <span class="ans-key">グローバル</span>（ISPから割り当てられた外部側IPアドレス）<br>
+          c: <span class="ans-key">PoE+</span>（最大30WでAPに給電する機能）
+          <div class="ans-why">
+            <strong>解説：</strong><br>
+            a/b：NAPTはプライベートIPアドレスをグローバルIPアドレスに変換し、ポート番号も変換することで多数の内部ホストが1つのグローバルIPを共有できます。<br><br>
+            c：PoE（Power over Ethernet）はイーサネットケーブルで電力供給する技術。PoE+（IEEE 802.3at）は最大30Wの給電に対応。APのような消費電力が高めの機器に対応。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(2)</div>
+        <div>DHCPサーバは受け取ったgiaddrフィールドの情報を使って何を識別するかを、15字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">PCが属するセグメント</span>
+          <div class="ans-why">
+            <strong>解説：</strong>DHCP Relayエージェントは、PCからのDHCPDISCOVERを受信すると、giaddrフィールドに自分のインタフェースIP（そのセグメントのL3SWのIPアドレス）を格納してDHCPサーバに転送します。DHCPサーバはgiaddrを見ることでクライアントがどのサブネットに属するかを判断し、適切なIPアドレス範囲から割り当てます。<br><br>
+            <strong>giaddr = Gateway IP Address</strong>：DHCPリレーエージェントが設定するフィールド。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>設問2 — 不具合のヒアリングと調査</h2>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(1)</div>
+        <div>Vさんがインターネット接続帯域の不足だけでなく、NAPT処理能力の不足という仮説を立てた理由を、40字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">ログイン画面が表示されない事象が一部かつ不特定のPCだから</span>
+          <div class="ans-why">
+            <strong>解説：</strong>帯域不足なら全PCが同様に遅くなるはずです。しかし「一部かつ不特定のPC」でタイムアウトが発生しているということは、帯域以外の要因が疑われます。NAPTテーブルが枯渇すると、エントリーを新規作成できないPCはインターネットにアクセスできなくなり、「タイムアウト」として現れます。一方、テーブルに既にエントリーがあるPCは通信できるため、一部不特定という状況が生じます。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(2)</div>
+        <div>本文中の [ d ] に入れる適切な字句を答えよ。（インターネット接続サービスの種別変更に関する空欄）</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">帯域確保</span>
+          <div class="ans-why">
+            <strong>解説：</strong>ベストエフォート型はネットワークの混雑状況によって実効速度が変動します。図2から実効速度が約200Mbpsで頭打ちになっており、帯域が制限されていることが判明。解決策として「帯域確保（ギャランティ）型」への変更を提案。帯域確保型はSLAで最低帯域が保証されます。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(3)</div>
+        <div>NAPTエントリーを作成する際に、ルータ自身が割り当てている値を、(i)〜(v)の記号で全て答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">(iii) registered IP address</span>、<span class="ans-key">(iv) assigned port number</span>
+          <div class="ans-why">
+            <strong>解説：</strong>NAPTエントリーの各フィールド：<br>
+            (i) local IP address：PCのプライベートIPアドレス（PCが持つ値）<br>
+            (ii) local port number：PCが使用するポート番号（PCが決める）<br>
+            (iii) registered IP address：ISPから割り当てられたグローバルIP → <strong>ルータが保持・割り当て</strong><br>
+            (iv) assigned port number：NAPTが変換後に使うポート番号 → <strong>ルータが割り当て</strong><br>
+            (v) IP protocol：TCP/UDP（PCのパケットから取得）<br><br>
+            ルータはグローバルIPとポート番号（変換後）を管理・割り当てます。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(4)</div>
+        <div>PC1台あたりのセッション数を最大200と見積もり、全PCが問題なく利用できるPC台数の上限と、必要なNAT変換テーブルのエントリー数を整数で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          PC台数上限：<span class="ans-key">327台</span><br>
+          必要エントリー数：<span class="ans-key">120,000エントリー</span>
+          <div class="ans-why">
+            <strong>計算：</strong><br>
+            • NATテーブル上限：65,536エントリー<br>
+            • 1台あたり200セッションなので、65,536 ÷ 200 = 327.68 → <strong>327台</strong>（小数点以下切り捨て）<br><br>
+            • 全PC 600台 × 200セッション = <strong>120,000エントリー</strong>が必要<br><br>
+            現状65,536エントリーでは600台には不足。設定変更で65,536以上（最低120,000）に拡張が必要。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>設問3 — HTTPバージョンとNAPTとの関係</h2>
+
+    <div class="diagram-box">
+      <div class="diagram-title">HTTPバージョンとNAT変換エントリー数の関係</div>
+      <pre class="diagram">
+  HTTP/1.1 → <span class="hiy">TCPコネクション×複数</span> → NAPTエントリー×複数（HoLブロッキング回避のため）
+  HTTP/2   → <span class="hi1">TCPコネクション×1</span>   → NAPTエントリー×1（ストリームで多重化）
+  HTTP/3   → <span class="hi2">QUICコネクション×1</span>  → NAPTエントリー×1（UDPベース、TCPのHoL回避）
+             (UDP使用)</pre>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問3(1)</div>
+        <div>HoL（Head of Line）ブロッキングについて、全ての処理が完了するまでに時間が掛かる理由を30字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">先行の処理が終わるまで後続の処理が待たされるから</span>
+          <div class="ans-why">
+            <strong>解説：</strong>HoL（Head of Line）ブロッキングは、列の先頭（Head）にある処理（Line）が詰まると、後続の処理が全て待機させられる問題です。HTTP/1.1ではリクエストを逐次処理するため、1つの画像ダウンロードが遅いと後続のリクエストが全て待たされます。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問3(2)</div>
+        <div>本文中の [ e ]〜[ h ] に入れる適切な字句を答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          e: <span class="ans-key">リクエスト</span>（PCからサーバへのHTTPリクエスト）<br>
+          f: <span class="ans-key">レスポンス</span>（サーバからPCへのHTTPレスポンス）<br>
+          g: <span class="ans-key">ストリームID</span>（HTTP/2の多重化識別子）<br>
+          h: <span class="ans-key">並列</span>（HTTP/2で複数ストリームを同時処理）
+          <div class="ans-why">
+            <strong>解説：</strong>HTTP/1.1で10枚の画像をダウンロードする場合、HTTPリクエストとレスポンスを1つずつ10回実行。HTTP/2ではストリームID（整数）を付与して1つのTCPコネクション内で並列処理できます。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問3(3)</div>
+        <div>EサービスのサーバがHTTP/3に対応している場合、NATエントリーを有効活用するための保持時間の調整を答えよ。また、その効果を45字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          調整：<span class="ans-key">UDPの保持時間を300秒より小さくする</span><br>
+          効果：<span class="ans-key">未使用のUDPフローによるNAPT変換エントリーを早期に削除できる</span>
+          <div class="ans-why">
+            <strong>解説：</strong>HTTP/3はQUIC（UDP）を使用します。UDPのNAT保持時間はデフォルト300秒と長めです。HTTP/3のQUICコネクションが終了しても、UDPエントリーが300秒間保持されると、その分テーブルが無駄に消費されます。保持時間を短くすることで不要なエントリーを早期解放し、テーブルを有効活用できます。<br><br>
+            ただし短すぎると通信中のフローが切断されるため注意が必要（本文でも「極端な値は別の問題が発生」と記述）。
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Q3 -->
+<div id="page-q3" class="page">
+  <div class="content-page">
+    <div class="section-header">
+      <div class="section-dot dot-q3"></div>
+      <div class="section-title">問3 — セキュアWebゲートウェイの導入</div>
+    </div>
+
+    <div class="prob-scenario">
+      <strong>【シナリオ概要】</strong><br>
+      J社（従業員50名）でK社SaaS（電子メール・ストレージ）をHTTPS利用中。テレワーク導入・プロキシ運用省力化・セキュリティ強化のため、L社提供の<strong>SWG（セキュアWebゲートウェイ）サービス</strong>を導入検討。C主任が担当。
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">J社ネットワーク構成（現状→SWG導入後）</div>
+      <pre class="diagram">
+  【現状】
+  PC → L2SW → L3SW → FW → インターネット → K社SaaS
+                         ↑
+                    プロキシサーバ（DMZ）
+                    ※PAC ファイルで通信先振り分け
+
+  【SWG導入後】
+  社内PC(G) → ソフトE(F) → FW(I) → SWGサービス(H) → K社SaaS(J)
+  R-PC(B) → ソフトE(A) → インターネット → SWGサービス(H) → K社SaaS(J)
+                                     ↑
+                             業務用サーバ(K)：ダイレクト通信（直接接続リスト）
+  プロキシサーバ：フォワードプロキシ → <span class="hi3">リバースプロキシに変更</span>
+                 （R-PCから業務用サーバへのアクセス用）</pre>
+    </div>
+
+    <h2>設問1 — J社のネットワーク構成</h2>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(1)</div>
+        <div>社内NW機器、サーバ及びPCの時刻補正目的を、ログ解析に着目して25字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">複数機器のログを時系列で確認するため</span>
+          <div class="ans-why">
+            <strong>解説：</strong>セキュリティインシデントやトラブル発生時、複数機器のsyslogを時系列で照合して原因分析します。機器間で時刻がずれていると、どの機器でいつ何が起きたかの前後関係が把握できなくなります。NTPで時刻同期することで正確なログ解析が可能になります。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(2)</div>
+        <div>J社がプロキシサーバを経由させる目的を、本文中の字句を用いて二つ、それぞれ35字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          ①<span class="ans-key">登録したFQDNやIPアドレス宛ての通信をブロックするため</span><br>
+          ②<span class="ans-key">Webサイトへのアクセス履歴の確認のため</span>（または「利用者認証を行うため」）
+          <div class="ans-why">
+            <strong>解説：</strong>フォワードプロキシの主な用途：<br>
+            ①URLフィルタリング（ブロック機能）<br>
+            ②アクセスログ収集・監査（アクセス履歴確認）<br>
+            ③利用者認証（RADIUS等）<br><br>
+            本文にある「登録したFQDNやIPアドレス宛ての通信をブロック」と「アクセス履歴の確認」が明示的に記述されています。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(3)</div>
+        <div>FWの通信ログにおいて、PCからの不正な通信が確認された後でPCを特定するために確認するログを本文中の字句で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">L3SWのDHCPリースログ</span>
+          <div class="ans-why">
+            <strong>解説：</strong>FWの通信ログには送信元IPアドレスは記録されますが、どの物理PCかは分かりません。DHCPリースログを確認することで、その時刻にそのIPアドレスがどのMACアドレスのPCに割り当てられていたかを特定できます。MACアドレスから機器を特定します。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(4)</div>
+        <div>表1のFW許可ルール中の [ a ] [ b ] に入れる適切な機器名を、図1中の字句で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          a: <span class="ans-key">syslogサーバ</span>（DMZからUDP/514でsyslog転送先）<br>
+          b: <span class="ans-key">認証サーバ</span>（プロキシサーバからUDP/1812でRADIUS認証）
+          <div class="ans-why">
+            <strong>解説：</strong><br>
+            • 項番1：DMZ→[a]、UDP/514 → syslogプロトコル（UDP514）。DMZのNTPサーバ・プロキシサーバのログをsyslogサーバに転送。<br>
+            • 項番3：プロキシサーバ→[b]、UDP/1812 → RADIUSプロトコル（UDP1812）。プロキシが利用者認証のためにRADIUSサーバ（認証サーバ）に問い合わせ。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問1(5)</div>
+        <div>表1のFW許可ルール中の [ c ] [ d ] に入れる適切な数字を答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          c: <span class="ans-key">10080</span>（内部セグメント→プロキシサーバへのTCP接続ポート）<br>
+          d: <span class="ans-key">443</span>（内部セグメント→K社SaaS、HTTPS直接接続）
+          <div class="ans-why">
+            <strong>解説：</strong><br>
+            • c：本文に「プロキシサーバはTCP/10080で接続を待ち受ける設定」と明記。PCからプロキシへはTCP/10080。<br>
+            • d：K社SaaSへのアクセスはHTTPS（TCP/443）。PACファイルで業務用サーバとK社SaaSへはプロキシを経由せず直接接続する設定のため、FWにTCP/443の直接許可ルールが必要。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>設問2 — SWGサービスの仕様調査</h2>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(1)</div>
+        <div>SWGサービスがHTTPS通信のコンテンツを調査するために、あらかじめPCにインストールする証明書を20字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">SWGサービスのルート証明書</span>
+          <div class="ans-why">
+            <strong>解説：</strong>SWGサービスはHTTPS通信をSSL/TLSインスペクション（中間者攻撃的な手法）で検査します。SWGがHTTPS通信を復号・検査・再暗号化する際、SWG自身が発行した証明書をPCに提示します。PCがこれを信頼するためには、SWGのルート証明書（CA証明書）をあらかじめOSやブラウザの信頼済み証明書ストアにインストールする必要があります。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問2(2)</div>
+        <div>マルウェア駆除機能の隔離環境上での動作時に、ファイルが遠隔操作可能なマルウェアを含む場合に観察される外部通信先の名称を答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">C&Cサーバ</span>
+          <div class="ans-why">
+            <strong>解説：</strong>C&C（Command and Control）サーバは、マルウェアに感染した端末を遠隔操作するための指令サーバです。マルウェアは感染後、C&Cサーバに接続して命令を受け取ります。サンドボックス（隔離環境）でマルウェアを実行すると、C&Cサーバへの通信試行が観察されます。これにより遠隔操作型マルウェア（RAT等）を検知できます。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>設問3 — 導入検討</h2>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問3(1)</div>
+        <div>フォワードプロキシサーバの機能停止に伴って削除するFW許可ルールを、表1の項番1〜8から二つ選んで数字で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">項番2</span>、<span class="ans-key">項番7</span>
+          <div class="ans-why">
+            <strong>解説：</strong>フォワードプロキシが停止すると、プロキシサーバを送信元とするFWルールが不要になります。<br>
+            • 項番2：プロキシサーバ→インターネット TCP/80,443（プロキシ経由Web通信）<br>
+            • 項番7：内部セグメント→プロキシサーバ TCP/10080（PCからプロキシへの接続）<br><br>
+            項番3（プロキシ→認証サーバ UDP/1812）も一見削除対象に見えますが、プロキシサーバはリバースプロキシとして残るため、認証サーバへのRADIUS通信は継続する可能性があります。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問3(2)</div>
+        <div>(B)R-PCから(K)業務用サーバに接続する場合のアクセス経路を、図2中の(A)〜(M)を用いて答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">(B) → (A) → (H) → (I) → (E) → (I) → (K)</span>
+          <div class="ans-why">
+            <strong>解説：</strong>R-PC(B)はソフトE(A)をローカルプロキシとして使用。<br>
+            (B)R-PC → (A)ソフトE → インターネット → (H)SWGサービス → (I)FW → (E)リバースプロキシサーバ → (I)FW → (K)業務用サーバ<br><br>
+            R-PCからの通信はソフトEを経由してSWGサービスを通ります。業務用サーバへはリバースプロキシサーバ経由でアクセスします。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問3(3)</div>
+        <div>PCがSWGサービスへ接続するためのFWに追加する許可ルール（送信元、宛先、プロトコル/宛先ポート番号）を答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text">
+          送信元：<span class="ans-key">内部セグメント（またはソフトE）</span><br>
+          宛先：<span class="ans-key">SWGサービス</span><br>
+          プロトコル/宛先ポート：<span class="ans-key">TCP/443</span>
+          <div class="ans-why">
+            <strong>解説：</strong>ソフトEはSWGサービスのTCP/443ポート宛てにHTTPS通信を中継します（本文「SWGサービスのTCP/443ポート宛てに中継する」と記述）。内部セグメントのPCからFWを通過してインターネット上のSWGサービスへの通信を許可するルールが必要です。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問3(4)</div>
+        <div>K社SaaSの設定変更内容を35字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">アクセスを許可する送信元をSWG-GIPに変更する</span>
+          <div class="ans-why">
+            <strong>解説：</strong>現在のK社SaaSはJ社のグローバルIPアドレスからのアクセスのみを許可しています。SWG導入後は、通信の送信元がSWGサービスのグローバルIPアドレス（SWG-GIP）になります。そのため、K社SaaSのアクセス制限設定をSWG-GIPからのアクセスを許可するよう変更する必要があります。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <div class="qa-qnum">設問3(5)</div>
+        <div>業務用サーバのプライベートIPアドレスを直接接続リストに登録することで得られる利点を、通信の経路に着目して10字以内で答えよ。</div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-ans">
+        <div class="ans-label">// ANSWER</div>
+        <div class="ans-text"><span class="ans-key">FWの負荷軽減</span>（または「RTTの短縮」「経路の短縮」）
+          <div class="ans-why">
+            <strong>解説：</strong>業務用サーバへの通信がSWGサービスを経由しなくなる（ダイレクト通信）ため：<br>
+            • 通信経路が短縮される（インターネット経由→社内直通）<br>
+            • FWやL3SWの通過回数が減り負荷軽減<br>
+            • RTT（遅延）が短縮しレスポンスが改善<br><br>
+            解答の要点は「直接通信・経路短縮による利点」であること。
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="page-quiz" class="page">
+  <div class="content-page">
+    <div class="section-header">
+      <div class="section-dot dot-g"></div>
+      <div class="section-title">確認テスト — 理解度チェック</div>
+    </div>
+    <div class="quiz-container">
+      <div class="quiz-progress">
+        <span id="quiz-cur">1</span> / <span id="quiz-tot">12</span>
+        <div class="quiz-bar"><div class="quiz-bar-fill" id="quiz-bar-fill"></div></div>
+        <span id="quiz-score-disp">スコア: 0</span>
+      </div>
+      <div id="quiz-area"></div>
+      <div class="quiz-score" id="quiz-score-final">
+        <div class="score-num" id="final-score">0/12</div>
+        <div class="score-label">正解数</div>
+        <div style="margin-top:20px;color:var(--text2);font-size:14px;" id="score-comment"></div>
+        <button class="btn-primary" style="margin-top:24px" onclick="restartQuiz()">もう一度挑戦</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
 <script>
-const DATA = [
-  // ---- NW: 通信プロトコル ----
-  {id:1, cat:'nw', sub:'通信プロトコル', q:'BGP-4とは何か。', a:'自律システム(AS)間で経路情報を交換し、相互接続性を実現するパスベクトル型のルーティングプロトコル。'},
-  {id:2, cat:'nw', sub:'通信プロトコル', q:'OSPFとは何か。', a:'AS内で経路情報を交換するリンクステート型のルーティングプロトコルで、エリア分割により大規模ネットワークに対応する。'},
-  {id:3, cat:'nw', sub:'通信プロトコル', q:'TCPの輻輳制御とは何か。', a:'ネットワークの混雑状況に応じて送信データ量を調整する仕組みで、スロースタートや輻輳回避などのアルゴリズムによってパケット損失を防ぐ。'},
-  {id:4, cat:'nw', sub:'通信プロトコル', q:'IPsecのESPトンネルモードとは何か。', a:'元のIPパケット全体（IPヘッダを含む）を暗号化し、新たなIPヘッダを付加してカプセル化する通信方式。'},
-  {id:5, cat:'nw', sub:'通信プロトコル', q:'IPアドレスの集約とは何か。', a:'複数の連続したネットワークアドレスを、共通のプレフィックスを持つ一つの上位アドレスにまとめて経路情報を削減する手法。'},
-  {id:6, cat:'nw', sub:'通信プロトコル', q:'CoAPとは何か。', a:'IoT機器など制約のあるデバイス向けに設計された、UDPをベースとした軽量なアプリケーション層プロトコル。'},
-  {id:7, cat:'nw', sub:'通信プロトコル', q:'RIPとは何か。', a:'ホップ数を経路選択の基準とするディスタンスベクトル型のルーティングプロトコルで、UDPを使用して経路情報を交換する。'},
-  {id:8, cat:'nw', sub:'通信プロトコル', q:'FTPのアクティブモードとパッシブモードの違いは何か。', a:'アクティブモードはサーバがクライアントへデータ接続を発信し、パッシブモードはクライアントがサーバへデータ接続を発信する方式。'},
-  {id:9, cat:'nw', sub:'通信プロトコル', q:'ICMPとは何か。', a:'IPネットワークにおいて、エラー通知や疑似応答確認（Echo Request/Reply）などの制御メッセージを伝達するプロトコル。'},
-  {id:10, cat:'nw', sub:'通信プロトコル', q:'IGMPとは何か。', a:'ホストとルータ間でマルチキャストグループへの参加・離脱情報を交換するプロトコル。'},
-  {id:11, cat:'nw', sub:'通信プロトコル', q:'CIDRとは何か。', a:'クラスに依存しない可変長のサブネットマスクを用いてIPアドレスを柔軟に割り当てる方式で、アドレス空間の効率的な利用やルート集約に用いられる。'},
-  {id:12, cat:'nw', sub:'通信プロトコル', q:'マルチキャストアドレスとは何か。', a:'特定の複数の受信者グループに対して同時にデータを送信するための、クラスDに属するIPアドレス。'},
-  {id:13, cat:'nw', sub:'通信プロトコル', q:'TCPのシーケンス番号とは何か。', a:'送信データの順序を識別するための番号で、受信確認応答(ACK番号)とともにデータの再送制御や順序保証に用いられる。'},
-  {id:14, cat:'nw', sub:'通信プロトコル', q:'DNSのNSレコードとは何か。', a:'あるドメインの管理を委任されている権威DNSサーバを示すリソースレコード。'},
-  {id:15, cat:'nw', sub:'通信プロトコル', q:'DNSのAレコードとは何か。', a:'ホスト名とIPv4アドレスとの対応関係を示すリソースレコード。'},
-  {id:16, cat:'nw', sub:'通信プロトコル', q:'ブロードキャストアドレスとは何か。', a:'同一サブネット内の全ホストに同時にデータを送信するためのアドレスで、ホスト部のビットがすべて1のアドレス。'},
-  {id:17, cat:'nw', sub:'通信プロトコル', q:'サブネットワークアドレスとは何か。', a:'IPアドレスのうち、サブネットマスクによりネットワーク部として識別される部分から導かれる、そのサブネット自体を示すアドレス。'},
-  {id:18, cat:'nw', sub:'通信プロトコル', q:'IPv4とIPv6の主な違いは何か。', a:'アドレス長（32ビットと128ビット）、ヘッダ構造、断片化処理の方式などが異なり、IPv6はアドレス空間の拡大と処理の簡略化を実現している。'},
-  // ---- NW: データ通信と制御 ----
-  {id:19, cat:'nw', sub:'データ通信と制御', q:'スパニングツリープロトコル(STP)とは何か。', a:'ブリッジ／スイッチ間でループ構造を検出し、ルートブリッジを基準に冗長経路をブロックすることでループを防止するプロトコル。'},
-  {id:20, cat:'nw', sub:'データ通信と制御', q:'VLANタグとは何か。', a:'イーサネットフレームに挿入され、所属するVLANを識別するための4バイトの識別情報（IEEE802.1Q）。'},
-  {id:21, cat:'nw', sub:'データ通信と制御', q:'Automatic MDI/MDI-Xとは何か。', a:'接続するケーブルの種類（ストレート/クロス）を自動的に判別し、送受信ピンの割り当てを自動的に切り替える機能。'},
-  {id:22, cat:'nw', sub:'データ通信と制御', q:'CSMA方式とは何か。', a:'通信前に伝送路の使用状況を確認し、空いている場合に送信を行う制御方式。衝突を検出・回避する仕組みと組み合わせて用いられる。'},
-  // ---- NW: ネットワーク方式 ----
-  {id:23, cat:'nw', sub:'ネットワーク方式', q:'アーラン（呼量）とは何か。', a:'単位時間あたりの通話時間の総量を表す、通信トラフィックの単位。'},
-  {id:24, cat:'nw', sub:'ネットワーク方式', q:'フレーム長の算出に必要な考え方は何か。', a:'ヘッダ、データ、トレーラ等の各構成要素のオクテット数を合計して、フレーム全体の長さを求める計算方法。'},
-  {id:25, cat:'nw', sub:'ネットワーク方式', q:'音声ペイロードの計算で考慮すべき要素は何か。', a:'音声符号化方式のビットレートと、パケット生成周期（サンプリング間隔）から、1パケットに含まれる音声データ量を算出する。'},
-  {id:26, cat:'nw', sub:'ネットワーク方式', q:'光ファイバの伝送特性とは何か。', a:'信号が伝送距離に応じて減衰したり、波長分散によって波形が広がったりする、伝送品質に影響する物理的特性。'},
-  {id:27, cat:'nw', sub:'ネットワーク方式', q:'伝送誤りが発生する電文の個数を求める考え方は何か。', a:'ビット誤り率と電文の長さ（ビット数）から、誤りが発生する確率を算出し、電文全体の個数に乗じて求める。'},
-  // ---- NW: 応用・管理 ----
-  {id:28, cat:'nw', sub:'応用・管理', q:'SMTPのセッション開始コマンドは何か。', a:'クライアントがメールサーバに対してSMTPセッションの開始を要求する際に送信する、HELOまたはEHLOコマンド。'},
-  {id:29, cat:'nw', sub:'応用・管理', q:'IP電話の音声品質を表す指標とは何か。', a:'主観的な音声品質を数値化したMOS（平均オピニオン評点）や、それを客観的に推定するR値などの指標。'},
-  {id:30, cat:'nw', sub:'応用・管理', q:'WebDAVとは何か。', a:'HTTPを拡張し、Webサーバ上のファイルを直接編集・管理するプロトコル。'},
-  {id:31, cat:'nw', sub:'応用・管理', q:'MPLSとは何か。', a:'パケットにラベルを付与し、そのラベルに基づいて高速に転送経路を決定する、IPとL2の間で動作するスイッチング技術。'},
-  // ---- SEC: 攻撃手法 ----
-  {id:32, cat:'sec', sub:'攻撃手法', q:'ポリモーフィック型マルウェアとは何か。', a:'感染するたびにコード自体を変化させることで、シグネチャによる検知を回避するマルウェア。'},
-  {id:33, cat:'sec', sub:'攻撃手法', q:'テンペスト攻撃とは何か。', a:'電子機器が発する微弱な電磁波を傍受・解析することで、画面表示や入力内容などの情報を盗み取る攻撃。'},
-  {id:34, cat:'sec', sub:'攻撃手法', q:'前方秘匿性（PFS）とは何か。', a:'長期的に使用する秘密鍵が漏洩しても、過去にやり取りされた暗号化通信の内容が解読されない性質。'},
-  {id:35, cat:'sec', sub:'攻撃手法', q:'SSL/TLSのダウングレード攻撃とは何か。', a:'通信時に意図的に弱い暗号化方式やプロトコルバージョンを使用させることで、暗号強度を低下させて解読を容易にする攻撃。'},
-  // ---- SEC: 対策技術 ----
-  {id:36, cat:'sec', sub:'対策技術', q:'シグネチャ型IPSとは何か。', a:'あらかじめ登録された既知の攻撃パターン（シグネチャ）と通信内容を比較することで不正アクセスを検知する侵入防止システム。'},
-  {id:37, cat:'sec', sub:'対策技術', q:'NTPを使った増幅型DDoS攻撃に対する対策とは何か。', a:'NTPサーバの応答を悪用したリフレクション攻撃を防ぐため、不要なmonlistコマンドの無効化やアクセス制限を行う対策。'},
-  {id:38, cat:'sec', sub:'対策技術', q:'なりすましメールへの対策とは何か。', a:'送信元IPアドレスの認証を行うSPFや、電子署名で送信元を検証するDKIM、それらを組み合わせたDMARCなどの技術。'},
-  {id:39, cat:'sec', sub:'対策技術', q:'ビヘイビア法とは何か。', a:'プログラムの挙動（振る舞い）を監視し、不審な動作パターンを検出することでマルウェアを発見する手法。'},
-  {id:40, cat:'sec', sub:'対策技術', q:'踏み台にされることを防止する対策とは何か。', a:'外部から不正に中継利用されないよう、不要なポートの閉鎖やアクセス制御、NAPTの適切な設定などを行う対策。'},
-  // ---- SEC: 実装技術 ----
-  {id:41, cat:'sec', sub:'実装技術', q:'IEEE 802.1Xとは何か。', a:'有線/無線LANにおいて、ポート単位で接続端末を認証する規格。'},
-  {id:42, cat:'sec', sub:'実装技術', q:'EAPとは何か。', a:'様々な認証方式を統一的に扱うための拡張可能な認証フレームワークで、IEEE802.1X等と組み合わせて利用される。'},
-  {id:43, cat:'sec', sub:'実装技術', q:'IPsecとは何か。', a:'IPパケットレベルで認証や暗号化を行うことで、安全な通信を実現するプロトコル群。AHとESPの2つのプロトコルを持つ。'},
-  {id:44, cat:'sec', sub:'実装技術', q:'無線LANの情報セキュリティ対策とは何か。', a:'WPA3などの強固な暗号化方式を用いた通信の保護や、適切な認証方式の導入による不正アクセスの防止策。'},
-  // ---- DEV: システム開発技術 ----
-  {id:45, cat:'dev', sub:'システム開発技術', q:'FTA（故障の木解析）とは何か。', a:'発生し得る障害を頂上事象として設定し、その原因を論理ゲートを用いた樹形図で段階的に分析する手法。'},
-  {id:46, cat:'dev', sub:'システム開発技術', q:'SysMLとは何か。', a:'システムの構造や振る舞いをモデル化するための、UMLを拡張したシステムモデリング言語。'},
-  {id:47, cat:'dev', sub:'システム開発技術', q:'ユースケース図とは何か。', a:'システムが提供する機能と、それを利用するアクター（利用者や外部システム）との関係を表すUMLの図。'},
-  {id:48, cat:'dev', sub:'システム開発技術', q:'ブローカー（設計パターン）とは何か。', a:'クライアントとサーバ間の通信を仲介し、分散システムにおけるサービスの呼び出しや応答の取り次ぎを行う設計パターン。'},
-  // ---- SYS: コンピュータシステム ----
-  {id:49, cat:'sys', sub:'コンピュータシステム', q:'量子コンピュータとは何か。', a:'量子ビットの重ね合わせや量子のもつれを利用して、特定の計算を従来型コンピュータより高速に処理することを目指すコンピュータ。'},
-  {id:50, cat:'sys', sub:'コンピュータシステム', q:'メモリインターリーブとは何か。', a:'メモリを複数のバンクに分割し、連続したアクセスを並行して処理することで、実効的なアクセス速度を向上させる技術。'},
-  {id:51, cat:'sys', sub:'コンピュータシステム', q:'キャッシュメモリのライトスルー方式とライトバック方式の違いは何か。', a:'ライトスルーは主記憶とキャッシュの両方に同時に書き込む方式、ライトバックはキャッシュのみに書き込み、後でまとめて主記憶に反映する方式。'},
-  {id:52, cat:'sys', sub:'コンピュータシステム', q:'FaaSとは何か。', a:'サーバの管理を意識せず、イベントに応じて関数単位でコードを実行できるサーバレスコンピューティングの形態。'},
-  {id:53, cat:'sys', sub:'コンピュータシステム', q:'MTTRを短縮するために有効な施策とは何か。', a:'障害の早期検知や復旧手順の自動化、予備機への切替体制の整備などにより、平均修復時間を短縮する取り組み。'},
-  {id:54, cat:'sys', sub:'コンピュータシステム', q:'M/M/1の待ち行列モデルとは何か。', a:'到着過程と処理過程がともにポアソン分布（指数分布）に従い、待ち行列の窓口が1つであるという条件のもとで待ち時間や行列長を解析するモデル。'},
-  // ---- SWDEV: ソフトウェア開発管理技術 ----
-  {id:55, cat:'swdev', sub:'ソフトウェア開発管理技術', q:'マッシュアップとは何か。', a:'複数の異なるWebサービスやAPIを組み合わせて、新たな機能やサービスを作り出す手法。'},
-  {id:56, cat:'swdev', sub:'ソフトウェア開発管理技術', q:'リバースエンジニアリングとは何か。', a:'既存のソフトウェアやハードウェアを解析し、その仕様や設計情報を逆算的に抽出する手法。'},
-  {id:57, cat:'swdev', sub:'ソフトウェア開発管理技術', q:'バグトラッキングシステムとは何か。', a:'ソフトウェア開発において発見された不具合（バグ）の登録・進捗管理・修正状況の追跡を行う仕組み。'},
+// ===== NAVIGATION =====
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  tabs.forEach(t => { if(t.getAttribute('onclick') === `showPage('${name}')`) t.classList.add('active'); });
+  window.scrollTo(0,0);
+  updateProgress();
+  if(name === 'quiz') initQuiz();
+}
+
+function updateProgress() {
+  const el = document.getElementById('progress-fill');
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  el.style.width = scrollable > 0 ? (window.scrollY / scrollable * 100) + '%' : '0%';
+}
+window.addEventListener('scroll', updateProgress);
+
+// ===== QA TOGGLE =====
+function toggleQA(el) {
+  const ans = el.nextElementSibling;
+  const tog = el.querySelector('.qa-toggle');
+  ans.classList.toggle('open');
+  tog.textContent = ans.classList.contains('open') ? '▲' : '▼';
+}
+
+// ===== GLOSSARY =====
+const glossaryData = [
+  { term: 'OSPF', short: 'Open Shortest Path First', body: 'リンクステート型の動的ルーティングプロトコル。各ルータがLSA（リンク状態広告）を交換し、ダイクストラ法でSPF（最短経路）を計算。エリアで分割可能。', example: 'エリアID: 0.0.0.0 → バックボーンエリア\nルータID: ループバックIPを優先使用\nコスト: 帯域幅の逆数（デフォルト）' },
+  { term: 'OSPFコスト', short: 'OSPF経路の優先度指標', body: '値が小さいほど優先。デフォルトは参照帯域幅（100Mbps）÷インタフェース帯域幅。手動設定も可能。本問では広域イーサ=100, IPsec=1000, ループバック=1, その他=10。', example: '迂回させる → コストを最大値(65535)に変更\n通常経路に戻す → 元のコスト値に戻す' },
+  { term: 'OSPFネイバー認証', short: 'OSPF隣接関係の認証機能', body: 'OSPFルータ間でネイバー確立時に認証を行う機能。MD5やSHA等で実装。不正なルータが経路交換に参加することを防ぐセキュリティ機能。', example: '認証なし → 不正ルータが隣接関係を確立し偽経路を広告可能\n認証あり → 認証キーが一致するルータのみネイバー確立' },
+  { term: 'OSPFパッシブインタフェース', short: 'OSPF経路交換を行わないIF設定', body: 'パッシブインタフェースに設定するとHelloパケットの送受信を行わず、ネイバーを確立しない。ただし経路情報はOSPFに広告される。不要な経路交換を防ぐ。', example: 'PC接続ポート → パッシブ設定（PCとOSPF経路交換不要）\nルータ間接続ポート → アクティブ設定' },
+  { term: 'VRRP', short: 'Virtual Router Redundancy Protocol', body: '複数のルータで仮想IPアドレスを共有し、デフォルトゲートウェイを冗長化するプロトコル。優先度の高いルータがマスターとなり仮想IPを保持。障害時にバックアップが引き継ぐ。', example: 'R20: プライオリティ105（マスター）\nR21: プライオリティ100（バックアップ）\nプリエンプト: 高優先度ルータが復旧時に自動でマスターに戻る' },
+  { term: 'プリエンプトディレイ', short: 'VRRPマスター遷移の待機時間', body: 'VRRPのプリエンプト機能で、優先度の高いルータが復旧時にすぐにマスターにならず、一定時間待機する設定。OSPFコンバージェンス完了を待つために使用。', example: 'ルータ再起動直後 → OSPFネイバー未確立（経路なし）\nディレイ後 → OSPF収束完了 → マスターに遷移（安全）' },
+  { term: 'eBGP', short: 'external BGP（外部BGP）', body: '異なる自律システム（AS）間での経路交換プロトコル。本問ではA社（R30/R31）とC社SaaS間で使用。AS_PATHプリペンドで経路の優先制御が可能。', example: 'AS_PATHプリペンド: 自ASのAS番号を複数回付加\n→ 経路が長く見えるため優先度が下がる\nR30 AS_PATH短い → 優先, R31 長い → バックアップ' },
+  { term: 'DMVPN', short: 'Dynamic Multipoint VPN', body: '複数拠点間のVPNをフルメッシュで動的に構築する技術。ハブ&スポーク型の初期接続から、必要時に拠点間直接トンネルを作成。本問のIPsec VPNに使用。', example: '広域イーサ網と同様のフルメッシュトポロジを実現\n→ OSPFで同様の経路制御が可能' },
+  { term: 'NAPT', short: 'Network Address Port Translation', body: 'NATの拡張で、IPアドレスとポート番号をセットで変換。多数のプライベートIPホストが1つのグローバルIPアドレスを共有してインターネット接続可能。', example: '192.168.10.13:56124 → a.b.c.d:5001\n192.168.10.22:63219 → a.b.c.d:5002\nNATテーブルのエントリー数上限 = 65,536' },
+  { term: 'DHCPリレーエージェント', short: 'DHCP中継機能', body: '異なるサブネットからのDHCPメッセージをDHCPサーバに転送する機能。L3SW等に設定。giaddrフィールドに自分のインタフェースIPを格納して転送。', example: 'PC(192.168.10.x) → L3SW(DHCPリレー) → DHCPサーバ\ngiaddr = L3SWの192.168.10.1\nDHCPサーバはgiaddrでサブネットを判断しIP割当' },
+  { term: 'giaddr', short: 'Gateway IP Address（DHCPフィールド）', body: 'DHCPDISCOVERメッセージのフィールド。DHCPリレーエージェントが受信したインタフェースのIPアドレスを格納。DHCPサーバがクライアントのサブネットを識別するために使用。', example: 'PC → DHCPDISCOVER → L3SW(リレー)\nL3SWがgiaddr = 192.168.10.1に設定\n→ DHCPサーバが10.xセグメントのIPを割当' },
+  { term: 'HoLブロッキング', short: 'Head of Line Blocking', body: '直列処理において、先頭の処理が遅い/詰まると後続の全処理が待機させられる問題。HTTP/1.1のリクエスト/レスポンス処理、TCPのパケット再送でも発生。', example: 'HTTP/1.1: リクエスト10個を逐次処理\n→ 1個目が遅いと2個目以降が待機（HoL）\nHTTP/2: ストリームで多重化 → HTTPレイヤーのHoL解消' },
+  { term: 'HTTP/2', short: 'HTTPの第2バージョン', body: '1つのTCPコネクションで複数のHTTPセッションを多重化（ストリーム）。ストリームIDで識別。HTTP/1.1の複数TCPコネクション問題を解決。TCPレイヤーのHoLは残存。', example: 'ストリームID: 各リクエスト/レスポンスに付与する整数ID\n1TCPコネクション内で複数ストリームを並列処理\nNAPTエントリー: HTTPセッション数に関係なく1つ' },
+  { term: 'HTTP/3 / QUIC', short: 'UDPベースの次世代HTTP', body: 'HTTP/3はQUIC（UDP上のトランスポート）を使用。TCPレイヤーのHoLブロッキングを回避。UDPのNAT保持時間管理がTCPと異なる点に注意。', example: 'HTTP/3 → QUIC(UDP) → NAPTエントリー1つ\nUDP保持時間(デフォルト300秒)が長い\n→ 短縮することでNAPTテーブルを効率利用' },
+  { term: 'PoE / PoE+', short: 'Power over Ethernet', body: 'イーサネットケーブル経由で電力を供給する技術。PoE(IEEE 802.3af)は最大15.4W、PoE+(IEEE 802.3at)は最大30W。APや監視カメラ等への給電に使用。', example: 'L2SW → イーサネットケーブル → AP(Wi-Fi 6)\n最大30W給電（PoE+）\n電源ケーブル不要でAPを設置可能' },
+  { term: 'IEEE 802.1X', short: 'ネットワークアクセス認証規格', body: 'ネットワーク接続時に認証を行うIEEE標準規格。EAPプロトコルを使用。サプリカント（PC）、オーセンティケータ（AP/SW）、認証サーバ（RADIUS）の3者構成。', example: 'PC(サプリカント) → AP(オーセンティケータ)\n→ 認証サーバ(RADIUS) → 認証OK → ネットワーク接続' },
+  { term: 'SWGサービス', short: 'Secure Web Gateway', body: 'クラウド型のWebセキュリティサービス。プロキシ機能＋セキュリティ機能（URLフィルタ、マルウェア検査、SSLインスペクション等）を提供。テレワーク端末も一元管理可能。', example: '機能: ダイレクト通信・サイトブロック・レピュテーション・マルウェア駆除\nSWG-GIP: 企業単位の固定グローバルIP\nソフトE: PCのローカルプロキシエージェント' },
+  { term: 'SSLインスペクション', short: 'HTTPS通信の復号検査', body: 'SWGがHTTPS通信を中継する際に復号してコンテンツを検査し再暗号化する技術。PCにSWGのルート証明書をインストールすることでPCが警告なくアクセス可能。', example: 'PC → ソフトE → SWG(HTTPS復号/検査/再暗号化) → Webサーバ\n証明書: SWGのルート証明書をPCにインストール必要' },
+  { term: 'PAC ファイル', short: 'Proxy Auto-Config', body: 'プロキシ設定を自動化するJavaScriptファイル。ブラウザが取得して実行し、通信先ごとに「プロキシ経由」か「直接接続」かを判断。wpad.dat, proxy.pacなど。', example: 'if(shExpMatch(host, "*.example.com")) return "DIRECT";\nreturn "PROXY proxy:10080";' },
+  { term: 'RADIUS', short: 'Remote Authentication Dial-In User Service', body: 'ネットワークアクセス認証プロトコル。UDP/1812（認証）、UDP/1813（アカウンティング）を使用。802.1X認証やプロキシ認証のバックエンドとして動作。', example: 'プロキシサーバ → UDP/1812 → 認証サーバ(RADIUS)\n認証成功 → アクセス許可\n認証失敗 → アクセス拒否' },
+  { term: 'C&Cサーバ', short: 'Command & Control Server', body: 'マルウェアに感染した端末（ボット）を遠隔操作するための攻撃者のサーバ。感染端末はC&Cサーバに接続し命令を受け取る。マルウェア検査の隔離環境で通信先を確認できる。', example: 'サンドボックス(隔離環境)でマルウェア実行\n→ 外部通信を観察 → C&Cサーバへの接続を検出\n→ 遠隔操作型マルウェア（RAT等）と判定' },
+  { term: 'リバースプロキシ', short: '内部サーバの代理サーバ', body: 'サーバ側に置かれるプロキシ。外部クライアントからの接続を受け、内部サーバに転送。本問ではR-PCから業務用サーバへのアクセスを中継するために利用。フォワードプロキシと対比。', example: 'R-PC → インターネット → リバースプロキシ → 業務用サーバ\n外部からのアクセスポイントを集約\nR-PCは業務用サーバの内部IPを知らなくてよい' },
+  { term: 'syslog', short: 'システムログ転送プロトコル', body: 'ネットワーク機器やサーバのログをsyslogサーバに集約するプロトコル。UDP/514を使用。障害分析・セキュリティ監査・ログの時系列確認に利用。', example: '全機器 → UDP/514 → syslogサーバ\n時刻同期(NTP)が重要 → 複数機器ログの時系列照合\nDHCPリースログ → PC特定に使用' },
 ];
 
-const CATS = {
-  all:   {label:'すべて',           short:'ALL',    color:'var(--text)'},
-  nw:    {label:'ネットワーク',       short:'NW',     color:'var(--nw)',    bg:'var(--nw-soft)'},
-  sec:   {label:'セキュリティ',       short:'SEC',    color:'var(--sec)',   bg:'var(--sec-soft)'},
-  dev:   {label:'システム開発技術',   short:'DEV',    color:'var(--dev)',   bg:'var(--dev-soft)'},
-  sys:   {label:'コンピュータシステム', short:'SYS',  color:'var(--sys)',   bg:'var(--sys-soft)'},
-  swdev: {label:'SW開発管理',        short:'SWDEV',  color:'var(--swdev)', bg:'var(--swdev-soft)'},
-};
-
-// ---- In-memory state (no localStorage — keeps this safe to preview anywhere) ----
-let status = {};       // {id: 'got' | 'again'}
-let revealed = {};      // {id: true} once answer shown
-DATA.forEach(d => status[d.id] = null);
-
-let filter = 'all';
-let shuffle = false;
-let order = DATA.map(d => d.id);
-let pos = 0; // index within current filtered/ordered list
-
-function currentList(){
-  let ids = filter === 'all' ? DATA.map(d=>d.id) : DATA.filter(d=>d.cat===filter).map(d=>d.id);
-  if(shuffle){
-    // stable shuffle based on order array filtered
-    return order.filter(id => ids.includes(id));
-  }
-  return ids;
-}
-
-function byId(id){ return DATA.find(d=>d.id===id); }
-
-function shuffleArray(arr){
-  const a = arr.slice();
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-
-function setFilter(key){
-  filter = key;
-  pos = 0;
-  render();
-}
-
-function toggleShuffle(on){
-  shuffle = on;
-  if(on){ order = shuffleArray(DATA.map(d=>d.id)); }
-  pos = 0;
-  render();
-}
-
-function reveal(id){
-  revealed[id] = true;
-  render();
-}
-
-function mark(id, val){
-  status[id] = val;
-  goNext();
-}
-
-function goNext(){
-  const list = currentList();
-  if(pos < list.length - 1){ pos++; }
-  render();
-}
-function goPrev(){
-  if(pos > 0){ pos--; }
-  render();
-}
-function goTo(id){
-  const list = currentList();
-  const idx = list.indexOf(id);
-  if(idx >= 0){ pos = idx; render(); }
-}
-
-function resetSession(){
-  DATA.forEach(d => status[d.id] = null);
-  revealed = {};
-  pos = 0;
-  render();
-}
-
-function renderChips(){
-  const el = document.getElementById('chips');
-  el.innerHTML = '';
-  Object.keys(CATS).forEach(key=>{
-    const c = CATS[key];
-    const btn = document.createElement('div');
-    btn.className = 'chip' + (filter===key ? ' active':'');
-    btn.style.setProperty('--chip-color', c.color);
-    if(c.bg) btn.style.setProperty('--chip-bg', c.bg);
-    btn.innerHTML = `<span class="sw"></span>${c.label}`;
-    btn.onclick = () => setFilter(key);
-    el.appendChild(btn);
-  });
-}
-
-function renderRoute(){
-  const list = currentList();
-  const strip = document.getElementById('routeStrip');
-  strip.innerHTML = '';
-  list.forEach((id, idx)=>{
-    const d = byId(id);
-    const n = document.createElement('div');
-    let cls = 'node ' + (status[id]==='got' ? 'got' : status[id]==='again' ? 'again' : 'unseen');
-    if(idx === pos) cls += ' current';
-    n.className = cls;
-    n.style.background = status[id]==='got' ? 'var(--good)' : 'transparent';
-    n.style.borderColor = status[id]==='again' ? 'var(--again)' : (idx===pos ? 'var(--text)' : CATS[d.cat].color);
-    n.title = `Q${String(id).padStart(2,'0')}: ${d.q}`;
-    n.onclick = () => goTo(id);
-    strip.appendChild(n);
-  });
-  const doneCount = list.filter(id=>status[id]).length;
-  document.getElementById('routeLabelRight').textContent = `${doneCount} / ${list.length}`;
-}
-
-function renderStats(){
-  const list = currentList();
-  const got = list.filter(id=>status[id]==='got').length;
-  const again = list.filter(id=>status[id]==='again').length;
-  const todo = list.length - got - again;
-  document.getElementById('statsBar').innerHTML = `
-    <span class="got-c">わかった <b>${got}</b></span>
-    <span class="again-c">もう一度 <b>${again}</b></span>
-    <span>未回答 <b>${todo}</b></span>
-  `;
-}
-
-function renderQuiz(){
-  const area = document.getElementById('quizArea');
-  const list = currentList();
-
-  if(list.length === 0){
-    area.innerHTML = `<div class="card"><p style="color:var(--text-dim)">この分野には問題がありません。</p></div>`;
-    return;
-  }
-
-  const allDone = list.every(id => status[id]);
-  if(allDone){
-    const got = list.filter(id=>status[id]==='got').length;
-    const again = list.filter(id=>status[id]==='again').length;
-    area.innerHTML = `
-      <div class="result-panel">
-        <h2>✓ セッション完了</h2>
-        <p>このフィルタの全${list.length}問に回答しました。</p>
-        <div class="result-num">
-          <div><div class="n" style="color:var(--good)">${got}</div><div class="l">わかった</div></div>
-          <div><div class="n" style="color:var(--again)">${again}</div><div class="l">もう一度</div></div>
-        </div>
-        <button class="btn got" style="flex:0 0 auto;" onclick="retryAgain()">「もう一度」だけ再テスト</button>
-        <button class="btn" style="flex:0 0 auto; margin-left:8px;" onclick="resetSession()">最初からやり直す</button>
-      </div>
-    `;
-    return;
-  }
-
-  const id = list[pos];
-  const d = byId(id);
-  const cat = CATS[d.cat];
-  const isRevealed = !!revealed[id];
-
-  area.innerHTML = `
-    <div class="card" style="--cat-color:${cat.color}">
-      <div class="crumb">
-        <span class="badge">${cat.short}</span>
-        <span>/ ${d.sub}</span>
-        <span class="qnum">Q${String(pos+1).padStart(2,'0')} / ${list.length}</span>
-      </div>
-      <div class="question">${d.q}</div>
-      <div class="answer-zone">
-        ${ isRevealed ? `
-          <div class="answer-box">
-            <div class="answer-label">MODEL ANSWER</div>
-            ${d.a}
-          </div>
-        ` : `
-          <button class="reveal-btn" onclick="reveal(${id})">▾ 解答を見る</button>
-        `}
+function renderGlossary(filter='') {
+  const grid = document.getElementById('glossary-grid');
+  const filtered = filter ? glossaryData.filter(g =>
+    g.term.toLowerCase().includes(filter.toLowerCase()) ||
+    g.short.toLowerCase().includes(filter.toLowerCase()) ||
+    g.body.toLowerCase().includes(filter.toLowerCase())
+  ) : glossaryData;
+  grid.innerHTML = filtered.map((g,i) => `
+    <div class="gcard" onclick="this.classList.toggle('expanded')">
+      <div class="gcard-term">${g.term}</div>
+      <div class="gcard-short">${g.short}</div>
+      <div class="gcard-body">
+        ${g.body}
+        ${g.example ? `<div class="gcard-example">${g.example}</div>` : ''}
       </div>
     </div>
-    <div class="actions">
-      <button class="btn nav" onclick="goPrev()" ${pos===0?'disabled':''}>← 前へ</button>
-      <button class="btn again" onclick="mark(${id},'again')" ${!isRevealed?'disabled':''}>もう一度 ↻</button>
-      <button class="btn got" onclick="mark(${id},'got')" ${!isRevealed?'disabled':''}>わかった ✓</button>
-      <button class="btn nav" onclick="goNext()" ${pos===list.length-1?'disabled':''}>次へ →</button>
+  `).join('');
+}
+
+function filterGlossary(v) { renderGlossary(v); }
+renderGlossary();
+
+// ===== QUIZ =====
+const quizData = [
+  { q: 'OSPFでエリアID=0.0.0.0のエリアを何と呼ぶか？', choices: ['バックボーンエリア','スタブエリア','トータルスタブエリア','NSSAエリア'], ans: 0, explain: 'OSPFのエリアID=0.0.0.0はバックボーンエリアと呼ばれる特別なエリアです。すべてのエリアはバックボーンに接続する必要があります。' },
+  { q: 'OSPFルータを一意に識別するIDとして優先的に使われるインタフェースは？', choices: ['物理インタフェース','VLANインタフェース','ループバックインタフェース','トンネルインタフェース'], ans: 2, explain: 'ループバックインタフェースのIPアドレスはルータIDとして優先使用されます。物理障害に左右されない安定したIDとなります。' },
+  { q: 'VRRPのプリエンプトディレイを設定する目的は？', choices: ['VRRPのパケット送信を止めるため','OSPFの経路情報が収束するのを待つため','ルータのCPU負荷を下げるため','MACアドレステーブルをクリアするため'], ans: 1, explain: 'ルータ再起動直後はOSPFの経路交換が未完了です。プリエンプトディレイでOSPFコンバージェンス完了を待ってからVRRPマスターになることで、正常な経路情報でトラフィック転送できます。' },
+  { q: 'eBGPのAS_PATHプリペンドでR31のAS_PATHをR30より長くする目的は？', choices: ['セキュリティ向上のため','R30を優先して使い、R31をバックアップにするため','帯域幅を増やすため','R31の経路を削除するため'], ans: 1, explain: 'BGPはAS_PATHが短い経路を優先します。R31のAS_PATHを意図的に長くすることで、通常はR30経由、R30障害時のみR31を使うバックアップ設計を実現します。' },
+  { q: 'NAPTでルータ自身が割り当てる情報はどれか？（2つ選択問題として最もあてはまるもの）', choices: ['送信元プライベートIPアドレス','グローバルIPアドレスと変換後ポート番号','送信先IPアドレス','TCPフラグ'], ans: 1, explain: 'NAPTエントリーにおいて、ルータはグローバルIPアドレス（registered IP）とNAT後のポート番号（assigned port）を割り当て・管理します。プライベートIPや元のポートはクライアントの情報です。' },
+  { q: 'HTTP/2でHTTP/1.1の複数TCPコネクション問題を解決する仕組みは？', choices: ['キープアライブの延長','UDPへの切り替え','ストリームによる多重化','圧縮のみ'], ans: 2, explain: 'HTTP/2はストリームIDを使って1つのTCPコネクション内で複数のHTTPセッションを並列処理（多重化）できます。これによりTCPコネクション数を削減し、NAPTエントリーも節約できます。' },
+  { q: 'HTTP/3が使用するトランスポートプロトコルは？', choices: ['TCP','UDP（QUIC）','SCTP','WebSocket'], ans: 1, explain: 'HTTP/3はQUIC（UDP上に実装）を使用します。これによりTCPレイヤーのHoLブロッキングを回避できます。UDPを使うため、NAPTのUDP保持時間の管理が重要になります。' },
+  { q: 'DHCPリレーエージェントのgiaddrフィールドには何が入るか？', choices: ['DHCPサーバのIPアドレス','クライアントのMACアドレス','リレーエージェントが受信したインタフェースのIPアドレス','デフォルトゲートウェイのIPアドレス'], ans: 2, explain: 'DHCPリレーエージェントはDHCPDISCOVERを受信すると、受信インタフェースのIPアドレスをgiaddrに格納してDHCPサーバに転送。DHCPサーバはgiaddrでクライアントのサブネットを判断します。' },
+  { q: 'SWGサービスがHTTPS通信を検査するためにPCにインストールする証明書は？', choices: ['Webサーバの証明書','SWGサービスのルート証明書','クライアント証明書','中間CA証明書'], ans: 1, explain: 'SWGはHTTPS通信をSSLインスペクションで復号・検査・再暗号化します。PCがSWG発行の証明書を信頼するために、SWGのルート証明書をPCの証明書ストアにインストールします。' },
+  { q: 'RADIUS認証が使用するポート番号は？', choices: ['TCP/389','UDP/514','UDP/1812','TCP/8080'], ans: 2, explain: 'RADIUSの認証はUDP/1812を使用します（アカウンティングはUDP/1813）。プロキシサーバが認証サーバにアクセスする際のポートです。' },
+  { q: 'R10更改時に大阪本社内部NWからpingする対象として最適なのは？（R10経由通信の確認）', choices: ['東京支社のPC','インターネット上のサーバ','C社SaaS','大阪本社内の別PC'], ans: 2, explain: 'R10は広域イーサ網に接続し、C社SaaSへの経路を提供しています。大阪本社からC社SaaSへの通信はR10を経由するため、この疎通確認がR10迂回の確認に最適です。' },
+  { q: 'フォワードプロキシとリバースプロキシの違いは？', choices: ['フォワードはクライアント側、リバースはサーバ側に置かれる','フォワードはHTTPS専用、リバースはHTTP専用','フォワードは認証不可、リバースは認証可能','違いはない'], ans: 0, explain: 'フォワードプロキシはクライアント側に置かれ、クライアントからインターネットへの通信を中継。リバースプロキシはサーバ側に置かれ、外部からサーバへの通信を中継します。本問ではR-PCからの業務用サーバアクセス用にリバースプロキシを使用。' },
+];
+
+let quizIdx = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+function initQuiz() {
+  quizIdx = 0; quizScore = 0; quizAnswered = false;
+  document.getElementById('quiz-tot').textContent = quizData.length;
+  document.getElementById('quiz-score-final').classList.remove('show');
+  document.getElementById('quiz-area').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = quizData[quizIdx];
+  document.getElementById('quiz-cur').textContent = quizIdx + 1;
+  document.getElementById('quiz-score-disp').textContent = `スコア: ${quizScore}`;
+  document.getElementById('quiz-bar-fill').style.width = (quizIdx / quizData.length * 100) + '%';
+  quizAnswered = false;
+  document.getElementById('quiz-area').innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-tag">Q${quizIdx+1} / ${quizData.length}</div>
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-choices">
+        ${q.choices.map((c,i) => `<button class="quiz-choice" onclick="answerQuiz(${i})">${c}</button>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qexplain">✅ ${q.explain}</div>
+    </div>
+    <div class="quiz-actions">
+      <button class="btn-secondary" onclick="nextQuestion()" style="display:none" id="qnext">次の問題 →</button>
     </div>
   `;
 }
 
-function retryAgain(){
-  const list = currentList();
-  const againIds = list.filter(id=>status[id]==='again');
-  if(againIds.length===0){ resetSession(); return; }
-  againIds.forEach(id=>{ status[id]=null; revealed[id]=false; });
-  order = shuffle ? shuffleArray(DATA.map(d=>d.id)) : DATA.map(d=>d.id);
-  pos = currentList().indexOf(againIds[0]);
-  render();
+function answerQuiz(i) {
+  if(quizAnswered) return;
+  quizAnswered = true;
+  const q = quizData[quizIdx];
+  const btns = document.querySelectorAll('.quiz-choice');
+  btns.forEach((b,j) => {
+    b.classList.add('disabled');
+    if(j === q.ans) b.classList.add('correct');
+    else if(j === i) b.classList.add('wrong');
+  });
+  if(i === q.ans) quizScore++;
+  document.getElementById('qexplain').classList.add('show');
+  document.getElementById('qnext').style.display = 'inline-block';
+  document.getElementById('quiz-score-disp').textContent = `スコア: ${quizScore}`;
 }
 
-function render(){
-  renderChips();
-  renderRoute();
-  renderQuiz();
-  renderStats();
-}
-
-document.getElementById('shuffleToggle').addEventListener('change', (e)=>{
-  toggleShuffle(e.target.checked);
-});
-document.getElementById('resetBtn').addEventListener('click', resetSession);
-
-document.addEventListener('keydown', (e)=>{
-  const list = currentList();
-  if(list.length===0) return;
-  const id = list[pos];
-  if(e.key === 'ArrowRight'){ goNext(); }
-  else if(e.key === 'ArrowLeft'){ goPrev(); }
-  else if(e.key === ' ' || e.key==='Enter'){
-    e.preventDefault();
-    if(!revealed[id]) reveal(id);
+function nextQuestion() {
+  quizIdx++;
+  if(quizIdx >= quizData.length) {
+    showFinalScore();
+  } else {
+    renderQuestion();
   }
-  else if(e.key === '1' && revealed[id]){ mark(id,'got'); }
-  else if(e.key === '2' && revealed[id]){ mark(id,'again'); }
-});
+}
 
-render();
+function showFinalScore() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const f = document.getElementById('quiz-score-final');
+  f.classList.add('show');
+  document.getElementById('final-score').textContent = `${quizScore}/${quizData.length}`;
+  const pct = quizScore / quizData.length;
+  const comments = ['もう一度用語解説を見直しましょう！', 'あと少し！苦手な問題を復習しよう。', '合格ライン！設問解説で理解を深めよう。', '素晴らしい！本番でも自信を持って。'];
+  document.getElementById('score-comment').textContent = comments[Math.min(3, Math.floor(pct * 4))];
+}
+
+function restartQuiz() { initQuiz(); }
 </script>
 </body>
 </html>
